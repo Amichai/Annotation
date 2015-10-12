@@ -9,3 +9,6 @@ TimeZonesTester/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
 TimeZonesTester/bin/
 Annotation.suo
 Annotation.v12.suo
+Annotation.Web/obj/
+Annotation.Web/bin/
+Annotation.Web/Scripts/i18n/
