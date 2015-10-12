@@ -1,0 +1,11 @@
+packages/
+TimeZones.suo
+TimeZones.v12.suo
+TimeZones.Web/bin/
+TimeZones.Web/obj/
+TimeZones.Web/Scripts/i18n/
+TimeZonesTester/obj/
+TimeZonesTester/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+TimeZonesTester/bin/
+Annotation.suo
+Annotation.v12.suo
