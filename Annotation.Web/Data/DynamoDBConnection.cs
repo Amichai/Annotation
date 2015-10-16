@@ -52,7 +52,6 @@ namespace Annotation.Web.Data {
         public Dictionary<string, string> GetUser(
             string userId
             ) {
-                //string indexName = "UserId-index";
                 string indexName = "UserId";
                 string propertyName = "UserId";
                 var matches = this.get(USER_TABLE, propertyName, userId);

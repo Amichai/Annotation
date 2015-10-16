@@ -13,7 +13,9 @@ namespace Annotation.Web.Util {
     public static class IdentityUtil {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static IDataManager DataManager = DynamoDBConnection.Instance;
+        //public static IDataManager DataManager = DynamoDBConnection.Instance;
+        public static IDataManager DataManager = new FakeDataManager();
+
         public static UserModel GetCurrentUser() {
             var session = HttpContext.Current.Request.Cookies["session_id"];
             if (session == null) {

@@ -18,40 +18,8 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user""
             this.userIdToUser[userId] = value;
         }
 
-        public Guid AddTimeZone(string name, string city, double offset, string userId) {
-            if(!this.userTimeZones.ContainsKey(userId)) {
-                this.userTimeZones[userId] = new List<TimeZoneModel>();
-            }
-            var id = Guid.NewGuid();
-            this.userTimeZones[userId].Add(new TimeZoneModel() {
-                City = city,
-                Name = name, 
-                GMTOffset = offset,
-                Id = id
-            });
-            return id;
-        }
-
-        public void DeleteTimeZone(string userId, Guid id) {
-            var tz = this.userTimeZones[userId].Where(i => i.Id == id).Single();
-            this.userTimeZones[userId].Remove(tz);
-        }
-
         public List<UserModel> GetAllUsers(int limit) {
             return this.userIdToUser.Values.Select(i => UserModel.FromJson(i)).ToList();
-        }
-
-        public TimeZoneModel GetTimeZone(Guid id) {
-            return userTimeZones.SelectMany(i => i.Value).Where(i => i.Id == id).SingleOrDefault();
-        }
-
-        private Dictionary<string, List<TimeZoneModel>> userTimeZones = new Dictionary<string, List<TimeZoneModel>>();
-
-        public List<TimeZoneModel> GetTimeZones(string userId) {
-            if (!this.userTimeZones.ContainsKey(userId)) {
-                return new List<TimeZoneModel>();
-            }
-            return this.userTimeZones[userId];
         }
 
         public Dictionary<string, string> GetUser(string userId) {

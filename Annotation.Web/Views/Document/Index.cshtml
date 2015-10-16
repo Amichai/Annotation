@@ -1,0 +1,31 @@
+﻿@model Annotation.Web.Models.DocumentModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@*<h2>Document</h2>*@
+
+<div ng-controller="documentCtrl">
+    @*@Model.Title
+
+    <br />*@
+    <div class="row">
+        <div class="col-md-3" style="overflow-y:scroll;left:0;width:30%;height:{{pageHeight}}px;position:absolute;top:60px">
+            <div ng-repeat=" ann in annotations">
+            {{ann.Body}}
+        </div>
+        </div>
+        <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:60px">
+            @Model.Body
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        var documentId = '@Model.Id';
+    </script>
+    <script src="~/Scripts/Controllers/DocumentController.js"></script>
+}

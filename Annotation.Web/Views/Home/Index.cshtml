@@ -1,7 +1,23 @@
 ﻿
-<div>
-    <div ng-controller="mainCtrl">
-    </div>
+<div ng-controller="mainCtrl">
+    <table st-table="documents"
+            st-safe-src="documentsSafe" class="table table-striped">
+        <thead>
+            <tr>
+                <th st-sort="Title">Title</th>
+                <th st-sort="Owner">Owner</th>
+                <th st-sort="AnnotationCount">Annotation Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="row in documents track by $index">
+                <td><a href="/Document?id={{row.Id}}">{{row.Title}}</a></td>
+                <td>{{row.Owner}}</td>
+                <td>{{row.AnnotationCount}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-default" ng-click="addNew()">Add New</button>
 </div>
 
 @section Scripts{
