@@ -42,5 +42,12 @@ textarea {
 
 .clickable {
     cursor:pointer;
+}
 
+.linkedText {
+    background-color:lightgray;
+}
+
+.highlightedText {
+    background-color:lightgray;
 }

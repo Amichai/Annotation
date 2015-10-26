@@ -173,11 +173,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AnnotationModel.cs" />
+    <Compile Include="Models\DocumentInfo.cs" />
     <Compile Include="Models\DocumentModel.cs" />
+    <Compile Include="Models\LinkedAnnotation.cs" />
     <Compile Include="Models\PasswordHash.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\TokenRange.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\IdentityUtil.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +191,9 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="App_Data\Placeholder.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

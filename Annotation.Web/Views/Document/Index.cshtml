@@ -4,23 +4,20 @@
     ViewBag.Title = "Index";
 }
 
-@*<h2>Document</h2>*@
-
 <div ng-controller="documentCtrl">
-    @*@Model.Title
-
-    <br />*@
     <div class="row">
-        <div class="col-md-3" style="overflow-y:scroll;left:0;width:30%;height:{{pageHeight}}px;position:absolute;top:60px">
-            <div ng-repeat=" ann in annotations">
-            {{ann.Body}}
+        <div class="col-md-3" style="overflow-y:scroll;left:0;width:30%;height:{{pageHeight}}px;position:absolute;top:60px;">
+            <div ng-repeat="ann in annotations" 
+                 ng-mouseenter="hover(ann, true)"
+                 ng-mouseleave="hover(ann, false)">
+                <span ng-repeat="unit in ann.AnnotationBodyUnits"
+                      ng-class="{linkedText: unit.Type == 'LinkedText'}">{{unit.Val}}</span>
+            </div>
         </div>
-        </div>
-        <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:60px">
-            @Model.Body
+        <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:60px;">
+            @for (int i = 0; i < Model.Tokens.Count; i++) {<span style="display:inline;white-space:pre" id="token_@i">@Model.Tokens[i].ToString()</span>}
         </div>
     </div>
-
 </div>
 
 @section Scripts {
