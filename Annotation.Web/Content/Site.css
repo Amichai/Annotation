@@ -45,9 +45,14 @@ textarea {
 }
 
 .linkedText {
-    background-color:lightgray;
+    font-weight:bold;
 }
 
 .highlightedText {
     background-color:lightgray;
+}
+
+hr {
+    margin-bottom:0px;
+    margin-top:0px;
 }

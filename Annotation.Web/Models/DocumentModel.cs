@@ -12,9 +12,17 @@ namespace Annotation.Web.Models {
             public Token(string val, char? breakingChar) {
                 this.TokenVal = val;
                 this.BreakingChar = breakingChar;
+                this.LinkedAnnotations = new List<int>();
             }
             public string TokenVal { get; set; }
             public char? BreakingChar { get; set; }
+            public List<int> LinkedAnnotations { get; private set; }
+            public string AsString {
+                get {
+                    return this.ToString();
+                }
+            }
+
             public override string ToString() {
                 if(this.BreakingChar == null) {
                     return TokenVal;
@@ -154,6 +162,10 @@ namespace Annotation.Web.Models {
                 StartIdx = idx,
                 Range = tokens.Count
             };
+        }
+
+        internal void ClearLinkedAnnotations() {
+            this.Tokens.ForEach(i => i.LinkedAnnotations.Clear());
         }
     }
 }

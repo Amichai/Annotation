@@ -9,7 +9,7 @@ using System.Web.Http;
 namespace Annotation.Web.Controllers.api {
     public class AnnotationController : ApiController {
         private static Random rand = new Random();
-        public IEnumerable<AnnotationModel> Get(Guid id) {
+        public static List<AnnotationModel> RandomAnnotations() {
             List<AnnotationModel> toReturn = new List<AnnotationModel>();
             DocumentModel doc = DocumentController.documents[0];
             var tokens = doc.Tokens;
@@ -23,19 +23,7 @@ namespace Annotation.Web.Controllers.api {
                 }
                 toReturn.Add(new AnnotationModel(string.Format("Testing{0}", i), "`" + quote + "` annotation", doc));
             }
-            return toReturn.OrderBy(i => i.TokenRange.StartIdx);
-        }
-
-        // POST: api/Annotation
-        public void Post([FromBody]string value) {
-        }
-
-        // PUT: api/Annotation/5
-        public void Put(int id, [FromBody]string value) {
-        }
-
-        // DELETE: api/Annotation/5
-        public void Delete(int id) {
+            return toReturn;
         }
     }
 }
