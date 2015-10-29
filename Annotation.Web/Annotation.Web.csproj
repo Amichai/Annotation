@@ -179,12 +179,14 @@
     <Compile Include="Models\DocumentModel.cs" />
     <Compile Include="Models\PasswordHash.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\TokenizedAnnotation.cs" />
     <Compile Include="Models\TokenRange.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\IdentityUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Placeholder2.txt" />
     <Content Include="App_Data\XmlDocument.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

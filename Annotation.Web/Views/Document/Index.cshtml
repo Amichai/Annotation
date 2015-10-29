@@ -10,10 +10,17 @@
             <div ng-repeat="ann in annotations"
                  ng-mouseenter="hover(ann, $index, true)"
                  ng-mouseleave="hover(ann, $index, false)"
-                 ng-click="expandAnnotation(ann)"
+                 ng-click="expandAnnotation(ann, $index)"
                  id="annotation_{{$index}}">
-                <span ng-repeat="unit in ann.AnnotationBodyUnits"
-                      ng-class="{linkedText: unit.Type == 'LinkedText'}">{{unit.Val}}</span>
+                <div ng-hide="ann.isExpanded">
+                    <span ng-repeat="unit in ann.AnnotationPreviewUnits.Tokens"
+                          ng-class="{linkedText: unit.Type == 'LinkedText'}">
+                        {{unit.Val}}</span><span ng-show="ann.IsPreviewCutoff">...</span>
+                </div>
+                <div ng-show="ann.isExpanded" style="font-size:17px">
+                    <span ng-repeat="unit in ann.AnnotationBodyUnits.Tokens"
+                          ng-class="{linkedText: unit.Type == 'LinkedText'}">{{unit.Val}}</span>
+                </div>
                 <hr />
             </div>
         </div>

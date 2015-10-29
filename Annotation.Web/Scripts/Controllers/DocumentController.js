@@ -1,13 +1,11 @@
 ﻿app.controller('documentCtrl',
     ['$scope', '$http', function ($scope, $http) {
-        //$http.get(baseUrl + 'api/Annotation/' + documentId).success(function (annotations) {
-        //    ///Remove this api call in favor of the annotated document
-        //    $scope.annotations = annotations;
-        //});
-
         $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
             $scope.annotations = annotatedDocument.Annotations;
             $scope.document = annotatedDocument.Document;
+            for (var i = 0; i < $scope.annotations.length; i++) {
+                $scope.annotations[i].isExpanded = false;
+            }
         });
 
         $scope.pageHeight = window.innerHeight - 60;
@@ -25,12 +23,28 @@
             }
         }
 
-        $scope.expandAnnotation = function (annotation) {
+        $scope.expandAnnotation = function (annotation, index) {
             var id = annotation.TokenRange.StartIdx;
             document.getElementById('token_' + id).scrollIntoView(true);
+
+            if (annotation.isExpanded) {
+                annotation.isExpanded = false;
+                return;
+            }
+            //Get some jslinq here
+            for (var i = 0; i < $scope.annotations.length; i++) {
+                $scope.annotations[i].isExpanded = false;
+            }
+            annotation.isExpanded = true;
+            setTimeout(function () {
+                document.getElementById('annotation_' + index).scrollIntoView(true);
+            }, 0);
         }
 
         $scope.clickToken = function (token) {
+            if (token.LinkedAnnotations.length == 0) {
+                return;
+            }
             var id = token.LinkedAnnotations[0];
             document.getElementById('annotation_' + id).scrollIntoView(true);
         }
