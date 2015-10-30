@@ -16,13 +16,17 @@
 </style>
 
 <div ng-controller="documentCtrl">
-    <div
-         style="background-color:#3097d1;left:0;text-decoration:none;width:100%;height:58px;position:absolute;top:0;box-shadow: 0 0 16px #888888;text-align:center">
-        <a class="navLink" href="~/">Home</a>
-        <a><img src="~/Content/Assets/column3.png" width="25" class="setColumnStyle" /></a>
-        <a><img src="~/Content/Assets/text22.png" width="25" class="setColumnStyle"/></a>
-        <button class="btn btn-default" type="submit" style="float:left;margin-left:30px;margin-top:13px">Add New Annotation</button>
-        <a class="navLink" style="float:right" href="~/">Amichai</a>
+    <div class="navbar navbar-inverse navbar-fixed-top"
+         style="background-color:#3097d1;left:0;text-decoration:none;border:none;width:100%;height:58px;position:absolute;top:0;box-shadow: 0 0 16px #888888;text-align:center">
+        <div class="container">
+            <a class="navLink" href="~/">Home</a>
+            <button class="btn btn-default" type="submit" style="float:left;margin-left:10px;margin-top:13px">Add New Annotation</button>
+            <a class="navLink" style="float:right" href="~/">Amichai</a>
+            <div style="float:right">
+                <a><img src="~/Content/Assets/column3.png" width="25" class="setColumnStyle" /></a>
+                <a><img src="~/Content/Assets/text22.png" width="25" class="setColumnStyle" /></a>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-3" style="overflow-y:scroll;left:0;width:30%;height:{{pageHeight}}px;position:absolute;top:60px;" id="annotationPane">
