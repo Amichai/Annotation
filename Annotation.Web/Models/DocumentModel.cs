@@ -14,6 +14,7 @@ namespace Annotation.Web.Models {
                 this.BreakingChar = breakingChar;
                 this.LinkedAnnotations = new List<int>();
             }
+
             public string TokenVal { get; set; }
             public char? BreakingChar { get; set; }
             public List<int> LinkedAnnotations { get; private set; }

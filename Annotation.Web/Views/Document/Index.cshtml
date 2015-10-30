@@ -8,11 +8,21 @@
     #rootNavigationBar {
         visibility:hidden;
     }
+    a:hover
+    {
+      text-decoration:none;
+      color:white;
+    }
 </style>
 
 <div ng-controller="documentCtrl">
-    <div style="text-align:center;left:0;width:100%;height:58px;position:absolute;top:0;background-color:lightgray;box-shadow: 0 0px 16px #888888">
-        <h3>Document Viewer</h3>
+    <div
+         style="background-color:#3097d1;left:0;text-decoration:none;width:100%;height:58px;position:absolute;top:0;box-shadow: 0 0 16px #888888;text-align:center">
+        <a class="navLink" href="~/">Home</a>
+        <a><img src="~/Content/Assets/column3.png" width="25" class="setColumnStyle" /></a>
+        <a><img src="~/Content/Assets/text22.png" width="25" class="setColumnStyle"/></a>
+        <button class="btn btn-default" type="submit" style="float:left;margin-left:30px;margin-top:13px">Add New Annotation</button>
+        <a class="navLink" style="float:right" href="~/">Amichai</a>
     </div>
     <div class="row">
         <div class="col-md-3" style="overflow-y:scroll;left:0;width:30%;height:{{pageHeight}}px;position:absolute;top:60px;" id="annotationPane">
@@ -34,11 +44,15 @@
             </div>
         </div>
         <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:60px;">
-            <span ng-repeat="token in document.Tokens" id="token_{{$index}}"
-                  ng-click="clickToken(token)"
-                  style="display:inline;white-space:pre"
-                  ng-mouseenter="hoverToken(token, $index, true)"
-                  ng-mouseleave="hoverToken(token, $index, false)">{{token.AsString}}</span>
+            <div id="documentTitle">{{document.Title}}</div>
+            <br />
+            <div id="textBody">
+                <span ng-repeat="token in document.Tokens" id="token_{{$index}}"
+                      ng-click="clickToken(token)"
+                      style="display:inline;white-space:pre;"
+                      ng-mouseenter="hoverToken(token, $index, true)"
+                      ng-mouseleave="hoverToken(token, $index, false)">{{token.AsString}}</span>
+            </div>
         </div>
     </div>
 </div>

@@ -53,6 +53,44 @@ textarea {
 }
 
 hr {
-    margin-bottom:0px;
-    margin-top:0px;
+    margin-bottom:0;
+    margin-top:0;
+}
+
+.navLink {
+    color:rgba(255, 255, 255, 0.8);
+    background-color: transparent;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    line-height: 39px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    float: left;
+}
+
+#documentTitle {
+    font-size: 40px;
+    font-variant: small-caps;
+    font-family: serif;
+    font-weight:bold;
+    margin-left:40px;
+}
+
+#textBody {
+    font-family:serif;
+    font-size:20px;
+    margin-left:40px;
+}
+
+.setColumnStyle {
+    padding-top:12px;
+    float:left;
+    margin:5px;
+    cursor:pointer;
 }

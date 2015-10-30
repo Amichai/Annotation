@@ -19,13 +19,13 @@ namespace Annotation.Web.Controllers.api
                 documents.Add(new DocumentModel(mockText) {
                     AnnotationCount = 10,
                     Owner = "Test1",
-                    Title = "Title1",
+                    Title = "Paradise Lost",
                     Id = Guid.NewGuid()
                 });
                 documents.Add(new DocumentModel(mockText) {
                     AnnotationCount = 20,
                     Owner = "Test2",
-                    Title = "Title2",
+                    Title = "All Things Considered",
                     Id = Guid.NewGuid()
                 });
             }
