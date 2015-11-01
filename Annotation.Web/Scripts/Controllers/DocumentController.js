@@ -6,7 +6,22 @@
             for (var i = 0; i < $scope.annotations.length; i++) {
                 $scope.annotations[i].isExpanded = false;
             }
+
+            function f() {
+                for (var i = 0; i < $scope.document.Tokens.length; i++) {
+                    var token = $scope.document.Tokens[i];
+                    var linked = token.LinkedAnnotations;
+                    if (linked.length > 0) {
+                        $('#token_' + i).addClass('hasAnnotation');
+                    }
+                }
+            }
+            delay(f);
         });
+
+        function delay(callback) {
+            setTimeout(callback, 0);
+        }
 
         $scope.pageHeight = window.innerHeight - 60;
 

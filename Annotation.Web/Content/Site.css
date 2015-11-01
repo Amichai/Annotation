@@ -49,7 +49,12 @@ textarea {
 }
 
 .highlightedText {
-    background-color:lightgray;
+    background-color:lightgray !important;
+}
+
+
+.hasAnnotation {
+    background-color:#EEEEEE;
 }
 
 hr {
