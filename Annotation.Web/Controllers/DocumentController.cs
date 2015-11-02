@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Annotation.Web.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,8 +12,7 @@ namespace Annotation.Web.Controllers
         // GET: Document
         public ActionResult Index(Guid id)
         {
-            var doc = Annotation.Web.Controllers.api.DocumentController.documents.Where(i => i.Id == id).Single();
-            return View(doc);
+            return View(id);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Annotation.Web.Models;
+﻿using Annotation.Web.Data;
+using Annotation.Web.Models;
+using Annotation.Web.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,11 @@ using System.Web.Http;
 namespace Annotation.Web.Controllers.api {
     public class AnnotatedDocumentController : ApiController {
         public AnnotatedDocument Get(Guid id) {
-            var annotations = AnnotationController.RandomAnnotations();
-            return new AnnotatedDocument(annotations.OrderBy(i => i.TokenRange.StartIdx).ToList(),
-                DocumentController.documents[0]);
+            DocumentModel doc = DynamoDBConnection.Instance.GetDocument(id);
+            var user = IdentityUtil.GetCurrentUser();
+            List<AnnotationModel> annotations = DynamoDBConnection.Instance.GetAnnotations(id, user.UserId, doc);
+            return new AnnotatedDocument(annotations.OrderBy(i => i.Ord).ToList(),
+                doc);
         }
     }
 }

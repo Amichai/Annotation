@@ -59,6 +59,14 @@ namespace Annotation.Web.Models {
             }
         }
 
+        public int Ord {
+            get {
+                if (this.TokenRange == null) {
+                    return -1;
+                }
+                return this.TokenRange.StartIdx;
+            }
+        }
         public TokenRange TokenRange { get; private set; }
         public string Author { get; private set; }
         public string Body { get; private set; }
@@ -82,5 +90,9 @@ namespace Annotation.Web.Models {
         public TokenizedAnnotation AnnotationBodyUnits { get; private set; }
         public TokenizedAnnotation AnnotationPreviewUnits { get; private set; }
 
+
+        internal static AnnotationModel FromDictionary(Dictionary<string, string> dict, DocumentModel doc) {
+            return new AnnotationModel(dict["Author"], dict["Body"], doc);
+        }
     }
 }

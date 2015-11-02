@@ -1,23 +1,39 @@
 ﻿app.controller('documentCtrl',
     ['$scope', '$http', function ($scope, $http) {
-        $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
-            $scope.annotations = annotatedDocument.Annotations;
-            $scope.document = annotatedDocument.Document;
-            for (var i = 0; i < $scope.annotations.length; i++) {
-                $scope.annotations[i].isExpanded = false;
-            }
 
-            function f() {
-                for (var i = 0; i < $scope.document.Tokens.length; i++) {
-                    var token = $scope.document.Tokens[i];
-                    var linked = token.LinkedAnnotations;
-                    if (linked.length > 0) {
-                        $('#token_' + i).addClass('hasAnnotation');
+        function loadAnnotatedDocument() {
+            $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
+                $scope.annotations = annotatedDocument.Annotations;
+                $scope.document = annotatedDocument.Document;
+                for (var i = 0; i < $scope.annotations.length; i++) {
+                    $scope.annotations[i].isExpanded = false;
+                }
+
+                function f() {
+                    for (var i = 0; i < $scope.document.Tokens.length; i++) {
+                        var token = $scope.document.Tokens[i];
+                        var linked = token.LinkedAnnotations;
+                        if (linked.length > 0) {
+                            $('#token_' + i).addClass('hasAnnotation');
+                        }
                     }
                 }
-            }
-            delay(f);
-        });
+                delay(f);
+            });
+        }
+        
+        loadAnnotatedDocument();
+
+        $scope.saveAnnotation = function () {
+            var newAnnotation = new Object();
+            newAnnotation.Body = $scope.newAnnotationText;
+            newAnnotation.DocumentId = documentId;
+            $http.post(baseUrl + 'api/Annotation/', newAnnotation).success(function (annotatedDocument) {
+                $('#newAnnotationModal').modal('hide')
+                $scope.newAnnotationText = "";
+                loadAnnotatedDocument();
+            });
+        }
 
         function delay(callback) {
             setTimeout(callback, 0);
@@ -39,8 +55,10 @@
         }
 
         $scope.expandAnnotation = function (annotation, index) {
-            var id = annotation.TokenRange.StartIdx;
-            document.getElementById('token_' + id).scrollIntoView(true);
+            if (annotation.TokenRange) {
+                var id = annotation.TokenRange.StartIdx;
+                document.getElementById('token_' + id).scrollIntoView(true);
+            }
 
             if (annotation.isExpanded) {
                 annotation.isExpanded = false;
@@ -65,6 +83,9 @@
         }
 
         $scope.hover = function (ann, annotationIndex, entered) {
+            if (!ann.TokenRange) {
+                return;
+            }
             var start = ann.TokenRange.StartIdx;
             var range = ann.TokenRange.Range;
             if (entered) {

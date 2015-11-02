@@ -168,5 +168,11 @@ namespace Annotation.Web.Models {
         internal void ClearLinkedAnnotations() {
             this.Tokens.ForEach(i => i.LinkedAnnotations.Clear());
         }
+
+        internal static DocumentModel FromDictionary(Dictionary<string, string> dict) {
+            return new DocumentModel(dict["Body"]) {
+                Id = Guid.Parse(dict["DocumentId"])
+            };
+        }
     }
 }

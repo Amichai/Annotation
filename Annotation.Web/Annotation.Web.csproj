@@ -177,6 +177,7 @@
     <Compile Include="Models\AnnotationModel.cs" />
     <Compile Include="Models\DocumentInfo.cs" />
     <Compile Include="Models\DocumentModel.cs" />
+    <Compile Include="Models\NewAnnotationModel.cs" />
     <Compile Include="Models\PasswordHash.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Models\TokenizedAnnotation.cs" />

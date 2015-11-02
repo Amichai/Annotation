@@ -11,6 +11,9 @@ namespace Annotation.Web.Models {
             this.Document.ClearLinkedAnnotations();
             for (int i = 0; i < this.Annotations.Count; i++) {
                 var annotation = this.Annotations[i];
+                if (annotation.TokenRange == null) {
+                    continue;
+                }
                 int start = annotation.TokenRange.StartIdx;
                 int range = annotation.TokenRange.Range;
                 for(int j = start; j < start + range; j++) {

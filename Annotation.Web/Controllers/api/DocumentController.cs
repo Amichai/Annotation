@@ -1,5 +1,7 @@
-﻿using Annotation.Web.Models;
+﻿using Annotation.Web.Data;
+using Annotation.Web.Models;
 using Annotation.Web.Util;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,39 +14,19 @@ namespace Annotation.Web.Controllers.api
 {
     public class DocumentController : ApiController
     {
-        public static List<DocumentModel> documents = new List<DocumentModel>();
-        public DocumentController() {
-            string mockText = File.ReadAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Placeholder.txt"));
-            if (documents.Count == 0) {
-                documents.Add(new DocumentModel(mockText) {
-                    AnnotationCount = 10,
-                    Owner = "Test1",
-                    Title = "Paradise Lost",
-                    Id = Guid.NewGuid()
-                });
-                documents.Add(new DocumentModel(mockText) {
-                    AnnotationCount = 20,
-                    Owner = "Test2",
-                    Title = "All Things Considered",
-                    Id = Guid.NewGuid()
-                });
-            }
-        }
         // GET: api/Document
         public IEnumerable<DocumentInfo> Get() {
-            return documents.Select(i => i.Info);
-        }
-
-        // GET: api/Document/5
-        public string Get(int id)
-        {
-            return "value";
+            var currentUser = IdentityUtil.GetCurrentUser();
+            IEnumerable<DocumentInfo> documents = DynamoDBConnection.Instance.GetUserDocuments(currentUser.UserId);
+            //return documents.se;
+            return documents;
         }
 
         // POST: api/Document
         public DocumentModel Post([FromBody]DocumentModel doc) {
-            documents.Add(doc);
             doc.Owner = IdentityUtil.GetCurrentUser().UserId;
+            doc.Id = Guid.NewGuid();
+            bool success = DynamoDBConnection.Instance.AddDocument(doc);
             return doc;
         }
 

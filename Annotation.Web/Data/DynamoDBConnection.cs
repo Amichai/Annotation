@@ -48,6 +48,12 @@ namespace Annotation.Web.Data {
         }
 
         private const string USER_TABLE = @"annotation_users";
+        private const string USER_DOCUMENTS = @"annotation_userDocuments";
+        private const string DOCUMENTS_TABLE = @"annotation_documents";
+        private const string DOCUMENT_INFO_TABLE = @"annotation_documentInfo";
+        private const string ANNOTATION_TABLE = @"annotation_annotations";
+        private const string USER_ANNOTATIONS_TABLE = @"annotation_userAnnotations";
+        private const string DOCUMENT_ANNOTATIONS_TABLE = @"annotation_documentAnnotations";
 
         public Dictionary<string, string> GetUser(
             string userId
@@ -158,6 +164,76 @@ namespace Annotation.Web.Data {
                 log.Error("Update user failed", ex);
                 return false;
             }
+        }
+
+        internal IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
+            var a = this.get(USER_DOCUMENTS, "UserId", userId);
+            var ids = JArray.Parse(a[0]["DocumentIds"]);
+            foreach (var id in ids) {
+                var doc = this.get(DOCUMENT_INFO_TABLE, "DocumentId", id.ToString());
+                yield return DocumentInfo.FromDictionary(doc[0]);
+            }
+           
+        }
+
+        internal DocumentModel GetDocument(Guid id) {
+            var doc = this.get(DOCUMENTS_TABLE, "DocumentId", id.ToString())[0];
+            return DocumentModel.FromDictionary(doc);
+        }
+
+        internal bool AddDocument(DocumentModel doc) {
+            this.add(DOCUMENTS_TABLE, "DocumentId", doc.Id.ToString(),
+                new TableAttribute("Body", doc.Body));
+            this.add(DOCUMENT_INFO_TABLE, "DocumentId", doc.Id.ToString(),
+                new TableAttribute("Title", doc.Title),
+                new TableAttribute("Owner", doc.Owner),
+                new TableAttribute("AnnotationCount", doc.AnnotationCount.ToString()),
+                new TableAttribute("Id", doc.Id.ToString()));
+            var a = this.get(USER_DOCUMENTS, "UserId", doc.Owner.ToString());
+            var ids = JArray.Parse(a[0]["DocumentIds"]);
+            ids.Add(doc.Id);
+            this.add(USER_DOCUMENTS, "UserId", doc.Owner,
+                new TableAttribute("DocumentIds", ids.ToString()));
+            return true;
+        }
+
+        internal void AddAnnotation(NewAnnotationModel newAnnotation, string userId) {
+            this.add(ANNOTATION_TABLE, "AnnotationId", newAnnotation.AnnotationId.ToString(),
+                new TableAttribute("Timestamp", DateTime.Now.Ticks.ToString(), ValueType.N),
+                new TableAttribute("Body", newAnnotation.Body),
+                new TableAttribute("Author", userId));
+            var a = this.get(USER_ANNOTATIONS_TABLE, "UserId", userId);
+            JArray ids;
+            if (a.Count == 0) {
+                ids = JArray.Parse("[]");
+            } else {
+                ids = JArray.Parse(a[0]["AnnotationIds"]);
+            }
+            ids.Add(newAnnotation.AnnotationId);
+            this.add(USER_ANNOTATIONS_TABLE, "UserId", userId,
+                new TableAttribute("AnnotationIds", ids.ToString()));
+
+            string documentId = newAnnotation.DocumentId.ToString();
+            a = this.get(DOCUMENT_ANNOTATIONS_TABLE, "DocumentId", documentId);
+            if (a.Count == 0) {
+                ids = JArray.Parse("[]");
+            } else {
+                ids = JArray.Parse(a[0]["AnnotationIds"]);
+            }
+            ids.Add(newAnnotation.AnnotationId);
+            this.add(DOCUMENT_ANNOTATIONS_TABLE, "DocumentId", documentId,
+                new TableAttribute("AnnotationIds", ids.ToString()));
+        }
+
+        internal List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+            //TODO: check the permissions on this user
+            var a = this.get(DOCUMENT_ANNOTATIONS_TABLE, "DocumentId", documentId.ToString());
+            if (a.Count == 0) {
+                return new List<AnnotationModel>();
+            }
+            var ids = JArray.Parse(a[0]["AnnotationIds"]);
+            var annotations = ids.Select(i => this.get(ANNOTATION_TABLE, "AnnotationId", i.ToString()));
+            return annotations.Select(i => AnnotationModel.FromDictionary(i[0], doc)).ToList();
         }
     }
 }
