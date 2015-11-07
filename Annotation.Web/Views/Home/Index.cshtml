@@ -17,7 +17,28 @@
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-default" ng-click="addNew()">Add New</button>
+    <button class="btn btn-default" type="submit" style="float:left;margin-left:10px;margin-top:13px" data-toggle="modal" data-target="#newDocumentModal" title="Add new annotation"><span class="glyphicon glyphicon-plus"></span></button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newDocumentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Add New Document</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Author" class="form-control" ng-model="newDocumentAuthor" />
+                    <input type="text" placeholder="Title" class="form-control" ng-model="newDocumentTitle" />
+                    <textarea id="newDocumentTextArea" class="form-control" ng-model="newDocumentBody"></textarea>
+                </div>
+                <div class="modal-footer" style="margin-top:0">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="addNewDocument()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts{

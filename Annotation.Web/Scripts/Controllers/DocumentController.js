@@ -29,7 +29,7 @@
             newAnnotation.Body = $scope.newAnnotationText;
             newAnnotation.DocumentId = documentId;
             $http.post(baseUrl + 'api/Annotation/', newAnnotation).success(function (annotatedDocument) {
-                $('#newAnnotationModal').modal('hide')
+                $('#newAnnotationModal').modal('hide');
                 $scope.newAnnotationText = "";
                 loadAnnotatedDocument();
             });

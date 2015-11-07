@@ -11,7 +11,7 @@ using System.Linq;
 using System.Web;
 
 namespace Annotation.Web.Data {
-    public class DynamoDBConnection : Annotation.Web.Data.IDataManager {
+    public class DynamoDBConnection : IDataManager {
         private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private IAmazonDynamoDB client;
 
@@ -23,6 +23,7 @@ namespace Annotation.Web.Data {
         }
 
         public static DynamoDBConnection Instance = new DynamoDBConnection();
+        //public static IDataManager Instance = new FakeDataManager();
 
         public JObject RetrieveUser(string userId) {
             throw new Exception();
@@ -166,7 +167,7 @@ namespace Annotation.Web.Data {
             }
         }
 
-        internal IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
+        public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
             var a = this.get(USER_DOCUMENTS, "UserId", userId);
             var ids = JArray.Parse(a[0]["DocumentIds"]);
             foreach (var id in ids) {
@@ -176,12 +177,12 @@ namespace Annotation.Web.Data {
            
         }
 
-        internal DocumentModel GetDocument(Guid id) {
+        public DocumentModel GetDocument(Guid id) {
             var doc = this.get(DOCUMENTS_TABLE, "DocumentId", id.ToString())[0];
             return DocumentModel.FromDictionary(doc);
         }
 
-        internal bool AddDocument(DocumentModel doc) {
+        public bool AddDocument(DocumentModel doc) {
             this.add(DOCUMENTS_TABLE, "DocumentId", doc.Id.ToString(),
                 new TableAttribute("Body", doc.Body));
             this.add(DOCUMENT_INFO_TABLE, "DocumentId", doc.Id.ToString(),
@@ -197,7 +198,7 @@ namespace Annotation.Web.Data {
             return true;
         }
 
-        internal void AddAnnotation(NewAnnotationModel newAnnotation, string userId) {
+        public void AddAnnotation(NewAnnotationModel newAnnotation, string userId) {
             this.add(ANNOTATION_TABLE, "AnnotationId", newAnnotation.AnnotationId.ToString(),
                 new TableAttribute("Timestamp", DateTime.Now.Ticks.ToString(), ValueType.N),
                 new TableAttribute("Body", newAnnotation.Body),
@@ -225,7 +226,7 @@ namespace Annotation.Web.Data {
                 new TableAttribute("AnnotationIds", ids.ToString()));
         }
 
-        internal List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+        public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
             //TODO: check the permissions on this user
             var a = this.get(DOCUMENT_ANNOTATIONS_TABLE, "DocumentId", documentId.ToString());
             if (a.Count == 0) {

@@ -22,5 +22,15 @@ namespace Annotation.Web.Models {
                 Id = Guid.Parse(dict["DocumentId"])
             };
         }
+
+        private static Random rand = new Random();
+
+        internal static DocumentInfo Random() {
+            return new DocumentInfo() {
+                Id = Guid.NewGuid(),
+                Owner = "test",
+                Title = "Title_" + rand.Next(0, 100)
+            };
+        }
     }
 }

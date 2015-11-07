@@ -7,10 +7,13 @@ using System.Web;
 
 namespace Annotation.Web.Data {
     public class FakeDataManager : IDataManager {
+        public FakeDataManager() {
+            this.documents = Enumerable.Range(0, 10).Select(i => DocumentInfo.Random()).ToList();
+        }
 
         private Dictionary<string, JObject> userIdToUser = new Dictionary<string, JObject>() {
             { "test", JObject.Parse(@"{UserInfo: {
-FirstName:"""", LastName: """", UserId: ""test"", Role: ""user""
+FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""test""
 } }")}
         };
 
@@ -41,6 +44,29 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user""
 
         public bool UpdateUser(UserModel user) {
             throw new NotImplementedException();
+        }
+
+        private List<DocumentInfo> documents;
+
+        public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
+            return this.documents;
+        }
+
+        public bool AddDocument(DocumentModel doc) {
+            throw new NotImplementedException();
+        }
+
+        public void AddAnnotation(NewAnnotationModel newAnnotation, string userId) {
+            throw new NotImplementedException();
+        }
+
+        public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+            throw new NotImplementedException();
+        }
+
+
+        public DocumentModel GetDocument(Guid id) {
+            return DocumentModel.Random();
         }
     }
 }

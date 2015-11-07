@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Annotation.Web.Util;
+using System.IO;
 
 namespace Annotation.Web.Models {
     public class DocumentModel {
@@ -11,10 +12,14 @@ namespace Annotation.Web.Models {
         public class Token {
             public Token(string val, char? breakingChar) {
                 this.TokenVal = val;
+                if (breakingChar.HasValue && breakingChar.Value == '\n') {
+                    this.IsLineBreak = true;
+                }
                 this.BreakingChar = breakingChar;
                 this.LinkedAnnotations = new List<int>();
             }
 
+            public bool IsLineBreak { get; set; }
             public string TokenVal { get; set; }
             public char? BreakingChar { get; set; }
             public List<int> LinkedAnnotations { get; private set; }
@@ -131,9 +136,10 @@ namespace Annotation.Web.Models {
                 int i, p;
                 // check for needle
                 for (i = 0, p = index; i < needleLen; i++, p++) {
-                    if (array[p] != needle[i]) {
-                        break;
+                    if (array[p].Trim(toTrim) == needle[i].Trim(toTrim)) {
+                        continue;
                     }
+                    break;
                 }
 
                 if (i == needleLen) {
@@ -147,7 +153,7 @@ namespace Annotation.Web.Models {
             }
             return -1;
         }
-
+        private static char[] toTrim = new char[] { ',', ':', '-', '.', ' ' };
         internal TokenRange GetTokenRange(string annotationString) {
             if (string.IsNullOrWhiteSpace(annotationString)) {
                 return null;
@@ -173,6 +179,11 @@ namespace Annotation.Web.Models {
             return new DocumentModel(dict["Body"]) {
                 Id = Guid.Parse(dict["DocumentId"])
             };
+        }
+
+        internal static DocumentModel Random() {
+            var text = File.ReadAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Placeholder.txt"));
+            throw new NotImplementedException();
         }
     }
 }

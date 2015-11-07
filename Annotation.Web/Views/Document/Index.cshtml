@@ -14,8 +14,9 @@
 </style>
 
 <div ng-controller="documentCtrl">
-    <div class="navbar navbar-inverse navbar-fixed-top"
-         style="background-color:#3097d1;left:0;text-decoration:none;border:none;width:100%;height:58px;position:absolute;top:0;box-shadow: 0 0 16px #888888;text-align:center">
+    <div class="navbar navbar-inverse navbar-fixed-top navigationBar"
+         >
+         @*style="background-color:#3097d1;left:0;text-decoration:none;border:none;width:100%;height:58px;position:absolute;top:0;box-shadow: 0 0 16px #888888;text-align:center"*@
         <div class="container">
             <a class="navLink" href="~/">Home</a>
             <button class="btn btn-default" type="submit" style="float:left;margin-left:10px;margin-top:13px" data-toggle="modal" data-target="#newAnnotationModal" title="Add new annotation"><span class="glyphicon glyphicon-plus"></span></button>
@@ -51,10 +52,10 @@
             <br />
             <div id="textBody">
                 <span ng-repeat="token in document.Tokens" id="token_{{$index}}"
+                      style="display:inline;"
                       ng-click="clickToken(token)"
-                      style="display:inline;white-space:pre;"
                       ng-mouseenter="hoverToken(token, $index, true)"
-                      ng-mouseleave="hoverToken(token, $index, false)">{{token.AsString}}</span>
+                      ng-mouseleave="hoverToken(token, $index, false)">{{token.AsString}}<br ng-show="token.IsLineBreak"/></span>
             </div>
         </div>
     </div>
