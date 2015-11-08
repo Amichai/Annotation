@@ -4,14 +4,21 @@
             st-safe-src="documentsSafe" class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th st-sort="Title">Title</th>
+                <th st-sort="Author">Author</th>
                 <th st-sort="Owner">Owner</th>
                 <th st-sort="AnnotationCount">Annotation Count</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="row in documents track by $index">
+                <td>
+                    <span class="glyphicon glyphicon-trash" style="cursor:pointer" ng-click="trash(row)"></span>
+                    <span class="glyphicon glyphicon-edit" style="cursor:pointer" ng-click="edit(row)"></span>
+                </td>
                 <td><a href="/Document?id={{row.Id}}">{{row.Title}}</a></td>
+                <td>{{row.Author}}</td>
                 <td>{{row.Owner}}</td>
                 <td>{{row.AnnotationCount}}</td>
             </tr>
@@ -35,6 +42,45 @@
                 <div class="modal-footer" style="margin-top:0">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" ng-click="addNewDocument()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editDocumentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel3">Edit Document</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Author" class="form-control" ng-model="newDocumentAuthor" />
+                    <input type="text" placeholder="Title" class="form-control" ng-model="newDocumentTitle" />
+                    <textarea id="newDocumentTextArea" class="form-control" ng-model="newDocumentBody"></textarea>
+                </div>
+                <div class="modal-footer" style="margin-top:0">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="confirmEdit()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteDocumentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Confirm Delete</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <i>{{docToDelete.Title}}</i>?
+                </div>
+                <div class="modal-footer" style="margin-top:0">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" ng-click="confirmDelete()">Confirm</button>
                 </div>
             </div>
         </div>

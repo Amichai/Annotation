@@ -15,7 +15,10 @@ namespace Annotation.Web.Models {
                 this.PreviewText = this.Body.Substring(0, 200) + "...";
             }
             this.setAnnotationBodyUnits(fullText);
+            this.IsStarred = false;
         }
+
+        public bool IsStarred { get; set; }
 
         public bool IsPreviewCutoff {
             get {

@@ -95,6 +95,15 @@ namespace Annotation.Web.Models {
             }
         }
 
+        public string Author {
+            get {
+                return this.Info.Author;
+            }
+            set {
+                this.Info.Author = value;
+            }
+        }
+
         public string Owner {
             get {
                 return this.Info.Owner;
@@ -153,7 +162,7 @@ namespace Annotation.Web.Models {
             }
             return -1;
         }
-        private static char[] toTrim = new char[] { ',', ':', '-', '.', ' ' };
+        private static char[] toTrim = new char[] { ',', ':', '-', '.', ' ', ')', '(' };
         internal TokenRange GetTokenRange(string annotationString) {
             if (string.IsNullOrWhiteSpace(annotationString)) {
                 return null;
@@ -163,7 +172,7 @@ namespace Annotation.Web.Models {
             var vals2 = tokens.Select(i => i.TokenVal).ToArray();
             int idx = this.find(vals1, vals2);
             if (idx == -1) {
-                idx = this.find(vals1, vals2);
+                return null;
             }
             return new TokenRange() {
                 StartIdx = idx,

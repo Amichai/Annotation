@@ -189,10 +189,16 @@ namespace Annotation.Web.Data {
                 new TableAttribute("Title", doc.Title),
                 new TableAttribute("Owner", doc.Owner),
                 new TableAttribute("AnnotationCount", doc.AnnotationCount.ToString()),
-                new TableAttribute("Id", doc.Id.ToString()));
+                new TableAttribute("Id", doc.Id.ToString()),
+                new TableAttribute("Author", doc.Author)
+                );
             var a = this.get(USER_DOCUMENTS, "UserId", doc.Owner.ToString());
             var ids = JArray.Parse(a[0]["DocumentIds"]);
+            if (ids.Any(i => i.ToString() == doc.Id.ToString())) {
+                return true;
+            }
             ids.Add(doc.Id);
+            
             this.add(USER_DOCUMENTS, "UserId", doc.Owner,
                 new TableAttribute("DocumentIds", ids.ToString()));
             return true;
@@ -235,6 +241,18 @@ namespace Annotation.Web.Data {
             var ids = JArray.Parse(a[0]["AnnotationIds"]);
             var annotations = ids.Select(i => this.get(ANNOTATION_TABLE, "AnnotationId", i.ToString()));
             return annotations.Select(i => AnnotationModel.FromDictionary(i[0], doc)).ToList();
+        }
+
+        public void DeleteDocument(Guid docId, string userId) {
+            var a = this.get(USER_DOCUMENTS, "UserId", userId);
+            var ids = JArray.Parse(a[0]["DocumentIds"]);
+            var matches = ids.Where(i => i.ToString() == docId.ToString()).ToList();
+            foreach (var match in matches) {
+                ids.Remove(match);
+            }
+            this.add(USER_DOCUMENTS, "UserId", userId,
+                new TableAttribute("DocumentIds", ids.ToString()));
+            this.delete(DOCUMENTS_TABLE, "DocumentId", docId.ToString());
         }
     }
 }

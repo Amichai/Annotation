@@ -22,6 +22,11 @@ namespace Annotation.Web.Controllers.api
             return documents;
         }
 
+        public DocumentModel Get(Guid id) {
+            //TODO: Check user permissions
+            return DynamoDBConnection.Instance.GetDocument(id);
+        }
+
         // POST: api/Document
         public DocumentModel Post([FromBody]DocumentModel doc) {
             doc.Owner = IdentityUtil.GetCurrentUser().UserId;
@@ -31,13 +36,15 @@ namespace Annotation.Web.Controllers.api
         }
 
         // PUT: api/Document/5
-        public void Put(int id, [FromBody]string value)
+        public void Put([FromBody]DocumentModel doc)
         {
+            DynamoDBConnection.Instance.AddDocument(doc);
         }
 
         // DELETE: api/Document/5
-        public void Delete(int id)
-        {
+        public void Delete(Guid id) {
+            var currentUser = IdentityUtil.GetCurrentUser();
+            DynamoDBConnection.Instance.DeleteDocument(id, currentUser.UserId);
         }
     }
 }

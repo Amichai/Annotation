@@ -8,6 +8,7 @@ namespace Annotation.Web.Models {
         public string Title { get; set; }
         public string Owner { get; set; }
         public int AnnotationCount { get; set; }
+        public string Author { get; set; }
         public Guid Id { get; set; }
 
         internal static DocumentInfo FromJson(string p) {
@@ -18,6 +19,7 @@ namespace Annotation.Web.Models {
             return new DocumentInfo() {
                 Title = dict["Title"],
                 Owner = dict["Owner"],
+                Author = dict["Author"],
                 AnnotationCount = int.Parse(dict["AnnotationCount"]),
                 Id = Guid.Parse(dict["DocumentId"])
             };

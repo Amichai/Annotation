@@ -1,4 +1,5 @@
 ﻿using Annotation.Web.Models;
+using Annotation.Web.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,18 @@ namespace Annotation.Web.Controllers
         // GET: Document
         public ActionResult Index(Guid id)
         {
-            return View(id);
+            var user = IdentityUtil.GetCurrentUser();
+            return View(new DocIdUserId() {
+                DocumentId = id, 
+                UserId = user.UserId,
+                Role = user.Role
+            });
         }
+    }
+
+    public class DocIdUserId {
+        public Guid DocumentId { get; set; }
+        public string UserId { get; set; }
+        public string Role { get; set; }
     }
 }

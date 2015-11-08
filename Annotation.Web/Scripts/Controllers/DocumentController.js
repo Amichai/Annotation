@@ -24,6 +24,22 @@
         
         loadAnnotatedDocument();
 
+        $scope.canDelete = function (ann) {
+            return role == "admin" || userId == ann.Author;
+        }
+
+        $scope.starAnnotation = function (annotation, state) {
+            annotation.IsStarred = state;
+            event.stopPropagation();
+            //$http.post(baseUrl + 'api/Annotation/')
+        }
+
+        $scope.deleteAnnotation = function (annotation) {
+            event.stopPropagation();
+        }
+
+        $scope.currentUrl = window.location.href;
+
         $scope.saveAnnotation = function () {
             var newAnnotation = new Object();
             newAnnotation.Body = $scope.newAnnotationText;
