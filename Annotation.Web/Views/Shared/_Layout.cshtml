@@ -10,22 +10,42 @@
     <script src="~/Scripts/angular-cookies.min.js"></script>
     <script src="~/Scripts/smart-table.min.js"></script>
 </head>
-<body ng-app="timeZones" ng-cloak>
-    <div class="navbar navbar-inverse navbar-fixed-top" id="rootNavigationBar">
+<body ng-app="annotation" ng-cloak>
+    <div class="navbar navbar-inverse navbar-fixed-top navigationBar" id="rootNavigationBar">
         <div class="container">
             <div ng-controller="navBarCtrl">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="/"
-                       ng-class="{'selectedNavigationElement':currentPage == 'Home'}">Home</a>
-                    <a class="navbar-brand" href="/Users" ng-hide="currentUserModel == undefined || currentUserModel.Role == 'user'"
-                       ng-class="{'selectedNavigationElement':currentPage == 'Users'}">Users</a>
-                    <a class="navbar-brand" href="/Help"
-                       ng-class="{'selectedNavigationElement':currentPage == 'Help'}">API</a>
-                </div>
-                <a class="navbar-brand" href="/Account" style="float:right" ng-show="currentUserModel != undefined">Log Out</a>
-                <span class="navbar-brand" style="float:right;color:#999999" ng-show="currentUserModel != undefined">
-                    Hello, {{currentUserModel.UserId}}! ({{currentUserModel.Role}})
-                </span>
+                <nav class="navbar navbar-default" style="background-color:transparent;border:none">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li><a class="navbar-brand" href="/" ng-class="{'selectedNavigationElement':currentPage == 'Home'}">Home</a></li>
+                                <li>
+                                    <a href="/Users" ng-hide="currentUserModel == undefined || currentUserModel.Role == 'user'"
+                                       ng-class="{'selectedNavigationElement':currentPage == 'Users'}">Users</a>
+                                </li>
+                                <li>
+                                    <a href="/Help"
+                                       ng-class="{'selectedNavigationElement':currentPage == 'Help'}">API</a>
+                                </li>
+                            </ul>
+                            <form class="navbar-form navbar-left" role="search">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                                <button type="submit" class="btn btn-default">Submit</button>
+                            </form>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentUserModel.UserId}}<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Profile</a></li>
+                                        <li><a href="#">Log out</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div><!-- /.navbar-collapse -->
+                    </div><!-- /.container-fluid -->
+                </nav>
             </div>
         </div>
     </div>

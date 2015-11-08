@@ -507,8 +507,5 @@
             </summary>
             <returns>A user model</returns>
         </member>
-        <member name="M:Annotation.Web.Models.AnnotationModel.backTickIndices">
-            TODO: there should be an explicit `ord` field
-        </member>
     </members>
 </doc>

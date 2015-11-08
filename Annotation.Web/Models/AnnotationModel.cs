@@ -71,7 +71,6 @@ namespace Annotation.Web.Models {
         public string Author { get; private set; }
         public string Body { get; private set; }
         public string PreviewText { get; set; }
-        ///TODO: there should be an explicit `ord` field
 
         private List<int> backTickIndices() {
             List<int> toReturn = new List<int>();

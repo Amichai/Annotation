@@ -7,6 +7,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top:20px;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -63,7 +64,7 @@ hr {
 }
 
 .navLink {
-    color:rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.8);
     background-color: transparent;
     padding-top: 14px;
     padding-bottom: 14px;
@@ -79,13 +80,18 @@ hr {
     float: left;
 }
 
+.navLink:hover {
+    text-decoration: none;
+    color: white;
+}
+
 #documentTitle {
     font-size: 40px;
     font-variant: small-caps;
     font-family: serif;
-    font-weight:bold;
-    margin-left:40px;
-    margin-right:40px;
+    font-weight: bold;
+    margin-left: 40px;
+    margin-right: 40px;
 }
 
 #textBody {
@@ -96,7 +102,7 @@ hr {
 }
 
 .setColumnStyle {
-    padding-top:12px;
+    padding-top:8px;
     margin:5px;
     cursor:pointer;
 }
@@ -108,6 +114,27 @@ hr {
 }
 
 .navigationBar {
-    background-color:#3097d1;left:0;text-decoration:none;border:none;width:100%;height:58px;position:absolute;top:0;box-shadow: 0 0 16px #888888;text-align:center;
+    background-color:#3097d1;
+    left:0;
+    text-decoration:none;
+    border:none;
+    width:100%;
+    height:28px;
+    position:absolute;
+    top:0;
+    box-shadow: 0 0 16px #888888;
+    text-align:center;
+}
 
+.navbar-inverse .navbar-nav > li > a {
+    color: white;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.nav > li > a {
+    font-size:17px;
 }

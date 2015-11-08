@@ -1,4 +1,4 @@
-﻿var app = angular.module('timeZones', ['smart-table', 'ngCookies']);
+﻿var app = angular.module('annotation', ['smart-table', 'ngCookies']);
 
 app.controller('navBarCtrl', ['$scope', '$http', '$timeout', function ($scope, $http, $timeout) {
     $scope.currentPage = "Home";
