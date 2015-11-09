@@ -17,8 +17,9 @@ namespace Annotation.Web.Controllers.api
         // GET: api/Document
         public IEnumerable<DocumentInfo> Get() {
             var currentUser = IdentityUtil.GetCurrentUser();
-            IEnumerable<DocumentInfo> documents = DynamoDBConnection.Instance.GetUserDocuments(currentUser.UserId);
-            //return documents.se;
+            IEnumerable<DocumentInfo> documents = DynamoDBConnection.Instance.GetUserDocuments(currentUser.UserId)
+                .Where(i => !i.IsArchived)
+                ;
             return documents;
         }
 
@@ -36,15 +37,15 @@ namespace Annotation.Web.Controllers.api
         }
 
         // PUT: api/Document/5
-        public void Put([FromBody]DocumentModel doc)
-        {
+        public void Put([FromBody]DocumentModel doc) {
             DynamoDBConnection.Instance.AddDocument(doc);
         }
 
         // DELETE: api/Document/5
         public void Delete(Guid id) {
-            var currentUser = IdentityUtil.GetCurrentUser();
-            DynamoDBConnection.Instance.DeleteDocument(id, currentUser.UserId);
+            //TODO: check user permissions
+            //DynamoDBConnection.Instance.DeleteDocument(id, currentUser.UserId);
+            DynamoDBConnection.Instance.ArchiveDocument(id);
         }
     }
 }

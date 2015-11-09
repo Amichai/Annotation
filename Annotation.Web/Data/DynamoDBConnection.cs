@@ -167,12 +167,16 @@ namespace Annotation.Web.Data {
             }
         }
 
+        public DocumentInfo GetDocumentInfo(Guid id) {
+            var doc = this.get(DOCUMENT_INFO_TABLE, "DocumentId", id.ToString());
+            return DocumentInfo.FromDictionary(doc[0]);
+        }
+
         public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
             var a = this.get(USER_DOCUMENTS, "UserId", userId);
             var ids = JArray.Parse(a[0]["DocumentIds"]);
             foreach (var id in ids) {
-                var doc = this.get(DOCUMENT_INFO_TABLE, "DocumentId", id.ToString());
-                yield return DocumentInfo.FromDictionary(doc[0]);
+                yield return this.GetDocumentInfo(Guid.Parse(id.Value<string>()));
             }
            
         }
@@ -190,7 +194,8 @@ namespace Annotation.Web.Data {
                 new TableAttribute("Owner", doc.Owner),
                 new TableAttribute("AnnotationCount", doc.AnnotationCount.ToString()),
                 new TableAttribute("Id", doc.Id.ToString()),
-                new TableAttribute("Author", doc.Author)
+                new TableAttribute("Author", doc.Author),
+                new TableAttribute("IsArchived", doc.IsArchived.ToString())
                 );
             var a = this.get(USER_DOCUMENTS, "UserId", doc.Owner.ToString());
             var ids = JArray.Parse(a[0]["DocumentIds"]);
@@ -241,6 +246,14 @@ namespace Annotation.Web.Data {
             var ids = JArray.Parse(a[0]["AnnotationIds"]);
             var annotations = ids.Select(i => this.get(ANNOTATION_TABLE, "AnnotationId", i.ToString()));
             return annotations.Select(i => AnnotationModel.FromDictionary(i[0], doc)).ToList();
+        }
+
+        public void ArchiveDocument(Guid docId) {
+            var doc = this.GetDocument(docId);
+            var info = this.GetDocumentInfo(docId);
+            doc.Info = info;
+            doc.IsArchived = true;
+            this.AddDocument(doc);
         }
 
         public void DeleteDocument(Guid docId, string userId) {

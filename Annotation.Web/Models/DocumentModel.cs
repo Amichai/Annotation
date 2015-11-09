@@ -86,6 +86,15 @@ namespace Annotation.Web.Models {
         public string Body { get; private set; }
         public DocumentInfo Info { get; set; }
 
+        public bool IsArchived {
+            get {
+                return this.Info.IsArchived;
+            }
+            set {
+                this.Info.IsArchived = value;
+            }
+        }
+
         public string Title {
             get {
                 return this.Info.Title;

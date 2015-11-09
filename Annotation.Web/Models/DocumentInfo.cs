@@ -5,10 +5,14 @@ using System.Web;
 
 namespace Annotation.Web.Models {
     public class DocumentInfo {
+        public DocumentInfo() {
+            this.IsArchived = false;
+        }
         public string Title { get; set; }
         public string Owner { get; set; }
         public int AnnotationCount { get; set; }
         public string Author { get; set; }
+        public bool IsArchived { get; set; }
         public Guid Id { get; set; }
 
         internal static DocumentInfo FromJson(string p) {
@@ -21,7 +25,8 @@ namespace Annotation.Web.Models {
                 Owner = dict["Owner"],
                 Author = dict["Author"],
                 AnnotationCount = int.Parse(dict["AnnotationCount"]),
-                Id = Guid.Parse(dict["DocumentId"])
+                Id = Guid.Parse(dict["DocumentId"]),
+                IsArchived = bool.Parse(dict["IsArchived"])
             };
         }
 
