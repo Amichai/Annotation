@@ -94,6 +94,15 @@ hr {
     margin-right: 40px;
 }
 
+#documentAuthor {
+    font-size: 25px;
+    font-variant: small-caps;
+    font-family: serif;
+    font-weight: bold;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 #textBody {
     font-family:serif;
     font-size:20px;

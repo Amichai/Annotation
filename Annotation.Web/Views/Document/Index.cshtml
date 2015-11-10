@@ -74,6 +74,8 @@
         </div>
         <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:55px;">
             <div id="documentTitle">{{document.Title}}</div>
+            <div id="documentAuthor">{{document.Author}}</div>
+
             <br />
             <div id="textBody">
                 <span ng-repeat="token in document.Tokens" id="token_{{$index}}"

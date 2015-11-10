@@ -183,7 +183,10 @@ namespace Annotation.Web.Data {
 
         public DocumentModel GetDocument(Guid id) {
             var doc = this.get(DOCUMENTS_TABLE, "DocumentId", id.ToString())[0];
-            return DocumentModel.FromDictionary(doc);
+            var toReturn = DocumentModel.FromDictionary(doc);
+            var info = this.GetDocumentInfo(id);
+            toReturn.Info = info;
+            return toReturn;
         }
 
         public bool AddDocument(DocumentModel doc) {
@@ -250,8 +253,6 @@ namespace Annotation.Web.Data {
 
         public void ArchiveDocument(Guid docId) {
             var doc = this.GetDocument(docId);
-            var info = this.GetDocumentInfo(docId);
-            doc.Info = info;
             doc.IsArchived = true;
             this.AddDocument(doc);
         }
