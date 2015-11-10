@@ -14,7 +14,11 @@ namespace Annotation.Web.Controllers.api {
         public void Post([FromBody]NewAnnotationModel newAnnotation) {
             var current = IdentityUtil.GetCurrentUser();
             newAnnotation.AnnotationId = Guid.NewGuid();
-            DynamoDBConnection.Instance.AddAnnotation(newAnnotation, current.UserId);
+            DynamoDBConnection.Instance.AddAnnotationAndLinkToUser(newAnnotation, current.UserId);
+        }
+
+        public void Put([FromBody] UpdateAnnotationModel annotation) {
+            DynamoDBConnection.Instance.UpdateAnnotation(annotation);
         }
     }
 }

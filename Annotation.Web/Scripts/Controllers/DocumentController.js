@@ -34,11 +34,29 @@
             //$http.post(baseUrl + 'api/Annotation/')
         }
 
+        $scope.canEdit = function (ann) {
+            return userId = ann.Author;
+        }
+
+        $scope.editAnnotation = function (ann) {
+            $scope.annotationBeingEdited = ann;
+            $('#editAnnotationModal').modal('show');
+            event.stopPropagation();
+        }
+
         $scope.deleteAnnotation = function (annotation) {
             event.stopPropagation();
         }
 
         $scope.currentUrl = window.location.href;
+
+        $scope.saveAnnotationEdits = function () {
+            $http.put(baseUrl + 'api/Annotation/', $scope.annotationBeingEdited).success(function (annotatedDocument) {
+                $('#editAnnotationModal').modal('hide');
+                $scope.annotationBeingEdited = undefined;
+                loadAnnotatedDocument();
+            });
+        }
 
         $scope.saveAnnotation = function () {
             var newAnnotation = new Object();

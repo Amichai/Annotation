@@ -7,6 +7,7 @@ using System.Web;
 namespace Annotation.Web.Models {
     public class AnnotationModel {
         private const int PREVIEW_LENGTH = 200;
+
         public AnnotationModel(string author, string body, DocumentModel fullText) {
             this.Author = author;
             this.Body = body;
@@ -28,6 +29,9 @@ namespace Annotation.Web.Models {
         }
 
         private void setAnnotationBodyUnits(DocumentModel fullText) {
+            if (fullText == null) {
+                throw new ArgumentNullException("fullText");
+            }
             this.AnnotationBodyUnits = new TokenizedAnnotation();
             var indices = this.backTickIndices();
             int lastIdx = 0;
@@ -40,9 +44,7 @@ namespace Annotation.Web.Models {
                 string prefix = this.Body.Substring(lastIdx, idx1);
                 this.AnnotationBodyUnits.Add(prefix);
                 string annotationString = this.Body.Substring(idx1, idx2).Trim('`');
-                if (this.TokenRange == null) {
-                    this.TokenRange = fullText.GetTokenRange(annotationString);
-                }
+                this.TokenRange = fullText.GetTokenRange(annotationString);
 
                 this.AnnotationBodyUnits.Add(annotationString, linkedText:true);
                 lastIdx = idx2;
@@ -73,8 +75,9 @@ namespace Annotation.Web.Models {
         }
         public TokenRange TokenRange { get; private set; }
         public string Author { get; private set; }
-        public string Body { get; private set; }
+        public string Body { get; set; }
         public string PreviewText { get; set; }
+        public Guid Id { get; private set; }
 
         private List<int> backTickIndices() {
             List<int> toReturn = new List<int>();
@@ -95,7 +98,9 @@ namespace Annotation.Web.Models {
 
 
         internal static AnnotationModel FromDictionary(Dictionary<string, string> dict, DocumentModel doc) {
-            return new AnnotationModel(dict["Author"], dict["Body"], doc);
+            var toReturn = new AnnotationModel(dict["Author"], dict["Body"], doc);
+            toReturn.Id = Guid.Parse(dict["AnnotationId"]);
+            return toReturn;
         }
 
         private static Random rand = new Random();
@@ -109,10 +114,12 @@ namespace Annotation.Web.Models {
             var quoted = string.Concat(doc.Tokens.Skip(startIdx).Take(toTake).Select(i => i.AsString));
             var textLength = text.Length;
             int textStart = rand.Next(textLength);
-            int textToTake = rand.Next(textLength);
+            int textToTake = rand.Next(1000);
             var body = string.Format("`{0}`", quoted) + 
                 string.Concat(text.Skip(textStart).Take(Math.Min(textToTake, textLength - textStart)));
-            return new AnnotationModel("Author_" + rand.Next(100), body, doc);
+            var toReturn = new AnnotationModel("test", body, doc);
+            toReturn.Id = Guid.NewGuid();
+            return toReturn;
         }
     }
 }

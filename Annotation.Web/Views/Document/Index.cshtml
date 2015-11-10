@@ -59,6 +59,7 @@
                 </div>
                 <div ng-show="ann.isExpanded" style="font-size:17px">
                     <span ng-repeat="unit in ann.AnnotationBodyUnits.Tokens"
+                          style="white-space:pre-wrap"
                           ng-class="{linkedText: unit.Type == 'LinkedText'}">{{unit.Val}}</span>
                     <div style="cursor:pointer;margin-left:30px">
                         <a>{{ann.Author}}</a>
@@ -66,7 +67,7 @@
                         <span class="glyphicon glyphicon-star" ng-show="ann.IsStarred" ng-click="starAnnotation(ann, false)" style="color:orange"></span>
                         <a href="{{currentUrl}}"><span class="glyphicon glyphicon-link" style="color:black"></span></a>
                         <span class="glyphicon glyphicon-trash" ng-show="canDelete(ann)" ng-click="deleteAnnotation(ann)"></span>
-
+                        <span class="glyphicon glyphicon-edit" ng-show="canEdit(ann)" ng-click="editAnnotation(ann)"></span>
                     </div>
                 </div>
                 <hr />
@@ -86,6 +87,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal -->
     <div class="modal fade" id="newAnnotationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -99,7 +101,25 @@
                 </div>
                 <div class="modal-footer" style="margin-top:0">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-click="saveAnnotation()">Save changes</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveAnnotation()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editAnnotationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel2">Edit Annotation</h4>
+                </div>
+                <div class="modal-body">
+                    <textarea id="editAnnotationTextArea" ng-model="annotationBeingEdited.Body"></textarea>
+                </div>
+                <div class="modal-footer" style="margin-top:0">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="saveAnnotationEdits()">Save Changes</button>
                 </div>
             </div>
         </div>

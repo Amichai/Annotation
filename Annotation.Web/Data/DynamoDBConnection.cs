@@ -22,8 +22,8 @@ namespace Annotation.Web.Data {
             client = new AmazonDynamoDBClient(endpoint);
         }
 
-        //public static IDataManager Instance = new DynamoDBConnection();
-        public static IDataManager Instance = new FakeDataManager();
+        public static IDataManager Instance = new DynamoDBConnection();
+        //public static IDataManager Instance = new FakeDataManager();
 
         public JObject RetrieveUser(string userId) {
             throw new Exception();
@@ -212,11 +212,17 @@ namespace Annotation.Web.Data {
             return true;
         }
 
-        public void AddAnnotation(NewAnnotationModel newAnnotation, string userId) {
-            this.add(ANNOTATION_TABLE, "AnnotationId", newAnnotation.AnnotationId.ToString(),
-                new TableAttribute("Timestamp", DateTime.Now.Ticks.ToString(), ValueType.N),
-                new TableAttribute("Body", newAnnotation.Body),
-                new TableAttribute("Author", userId));
+        public void AddAnnotation(Guid id, long ticks, string body, string author) {
+            this.add(ANNOTATION_TABLE, "AnnotationId", id.ToString(),
+                new TableAttribute("Timestamp", ticks.ToString(), ValueType.N),
+                new TableAttribute("Body", body),
+                new TableAttribute("Author", author));
+        }
+
+        public void AddAnnotationAndLinkToUser(NewAnnotationModel newAnnotation, string userId) {
+            this.AddAnnotation(newAnnotation.AnnotationId, 
+                DateTime.Now.Ticks,
+                newAnnotation.Body, userId);
             var a = this.get(USER_ANNOTATIONS_TABLE, "UserId", userId);
             JArray ids;
             if (a.Count == 0) {
@@ -267,6 +273,15 @@ namespace Annotation.Web.Data {
             this.add(USER_DOCUMENTS, "UserId", userId,
                 new TableAttribute("DocumentIds", ids.ToString()));
             this.delete(DOCUMENTS_TABLE, "DocumentId", docId.ToString());
+        }
+
+        public void UpdateAnnotation(UpdateAnnotationModel model) {
+            var id = model.Id;
+            var annotationDict = this.get(ANNOTATION_TABLE, "AnnotationId", id.ToString())[0];
+            var ticks = long.Parse(annotationDict["Timestamp"]);
+            string body = model.Body;
+            string author = annotationDict["Author"];
+            this.AddAnnotation(id, ticks, body, author);
         }
     }
 }

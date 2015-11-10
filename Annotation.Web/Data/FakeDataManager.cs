@@ -56,19 +56,24 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
             throw new NotImplementedException();
         }
 
-        public void AddAnnotation(NewAnnotationModel newAnnotation, string userId) {
+        public void AddAnnotationAndLinkToUser(NewAnnotationModel newAnnotation, string userId) {
             throw new NotImplementedException();
         }
 
         private static Random rand = new Random();
 
         public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+            if (this.annotations != null) {
+                return annotations.Values.ToList();
+            }
+
             int annotationCount = rand.Next(10, 50);
             var toReturn = new List<AnnotationModel>();
             for (int i = 0; i < annotationCount; i++) {
                 toReturn.Add(AnnotationModel.Random(doc));
             }
-            return toReturn;
+            this.annotations = toReturn.ToDictionary(i => i.Id, i => i);
+            return this.annotations.Values.ToList();
         }
 
         public DocumentModel GetDocument(Guid id) {
@@ -79,6 +84,12 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
         public void ArchiveDocument(Guid docId) {
             var d = this.GetDocument(docId);
             d.IsArchived = true;
+        }
+
+        private Dictionary<Guid, AnnotationModel> annotations = null;
+
+        public void UpdateAnnotation(UpdateAnnotationModel annotation) {
+            annotations[annotation.Id].Body = annotation.Body;
         }
     }
 }
