@@ -13,5 +13,7 @@ namespace Annotation.Web.Data {
         bool AddDocument(DocumentModel doc);
         void AddAnnotation(NewAnnotationModel newAnnotation, string userId);
         List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc);
+        void ArchiveDocument(Guid docId);
+
     }
 }

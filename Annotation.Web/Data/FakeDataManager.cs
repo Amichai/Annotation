@@ -60,13 +60,25 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
             throw new NotImplementedException();
         }
 
-        public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
-            throw new NotImplementedException();
-        }
+        private static Random rand = new Random();
 
+        public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+            int annotationCount = rand.Next(10, 50);
+            var toReturn = new List<AnnotationModel>();
+            for (int i = 0; i < annotationCount; i++) {
+                toReturn.Add(AnnotationModel.Random(doc));
+            }
+            return toReturn;
+        }
 
         public DocumentModel GetDocument(Guid id) {
             return DocumentModel.Random();
+        }
+
+
+        public void ArchiveDocument(Guid docId) {
+            var d = this.GetDocument(docId);
+            d.IsArchived = true;
         }
     }
 }

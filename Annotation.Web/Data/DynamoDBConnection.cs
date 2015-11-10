@@ -22,8 +22,8 @@ namespace Annotation.Web.Data {
             client = new AmazonDynamoDBClient(endpoint);
         }
 
-        public static DynamoDBConnection Instance = new DynamoDBConnection();
-        //public static IDataManager Instance = new FakeDataManager();
+        //public static IDataManager Instance = new DynamoDBConnection();
+        public static IDataManager Instance = new FakeDataManager();
 
         public JObject RetrieveUser(string userId) {
             throw new Exception();

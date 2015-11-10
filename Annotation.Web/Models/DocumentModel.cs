@@ -201,7 +201,12 @@ namespace Annotation.Web.Models {
 
         internal static DocumentModel Random() {
             var text = File.ReadAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Placeholder.txt"));
-            throw new NotImplementedException();
+            return new DocumentModel(text) {
+                Author = "Test Author",
+                Owner = "test",
+                Title = "Paradise Lost",
+                Id = Guid.NewGuid()
+            };
         }
     }
 }

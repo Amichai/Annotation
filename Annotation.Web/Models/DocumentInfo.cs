@@ -36,7 +36,8 @@ namespace Annotation.Web.Models {
             return new DocumentInfo() {
                 Id = Guid.NewGuid(),
                 Owner = "test",
-                Title = "Title_" + rand.Next(0, 100)
+                Title = "Title_" + rand.Next(0, 100),
+                Author = "Author_" + rand.Next(0, 100),
             };
         }
     }

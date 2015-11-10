@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -95,6 +96,23 @@ namespace Annotation.Web.Models {
 
         internal static AnnotationModel FromDictionary(Dictionary<string, string> dict, DocumentModel doc) {
             return new AnnotationModel(dict["Author"], dict["Body"], doc);
+        }
+
+        private static Random rand = new Random();
+
+        internal static AnnotationModel Random(DocumentModel doc) {
+            int maxTokensToTake = 20;
+            var text = File.ReadAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Placeholder2.txt"));
+            var tokenCount = doc.Tokens.Count;
+            var startIdx = rand.Next(tokenCount - maxTokensToTake);
+            int toTake = rand.Next(maxTokensToTake);
+            var quoted = string.Concat(doc.Tokens.Skip(startIdx).Take(toTake).Select(i => i.AsString));
+            var textLength = text.Length;
+            int textStart = rand.Next(textLength);
+            int textToTake = rand.Next(textLength);
+            var body = string.Format("`{0}`", quoted) + 
+                string.Concat(text.Skip(textStart).Take(Math.Min(textToTake, textLength - textStart)));
+            return new AnnotationModel("Author_" + rand.Next(100), body, doc);
         }
     }
 }
