@@ -9,6 +9,7 @@ namespace Annotation.Web.Models {
             this.Annotations = annotations;
             this.Document = document;
             this.Document.ClearLinkedAnnotations();
+            this.Annotators = this.Annotations.Select(i => i.Author).Distinct().ToList();
             for (int i = 0; i < this.Annotations.Count; i++) {
                 var annotation = this.Annotations[i];
                 if (annotation.TokenRange == null) {
@@ -27,6 +28,7 @@ namespace Annotation.Web.Models {
 			}
         }
 
+        public List<string> Annotators { get; set; }
         public DocumentModel Document { get; set; }
         public List<AnnotationModel> Annotations { get; set; }
     }

@@ -147,7 +147,11 @@ hr {
 .navbar-inverse .navbar-nav > .dropdown > a .caret {
     border-top-color: white;
     border-bottom-color: white;
-
+}
 .nav > li > a {
     font-size:17px;
+}
+
+.navbar {
+    margin-bottom:0;
 }

@@ -5,6 +5,7 @@
             $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
                 $scope.annotations = annotatedDocument.Annotations;
                 $scope.document = annotatedDocument.Document;
+                $scope.annotators = annotatedDocument.Annotators;
                 for (var i = 0; i < $scope.annotations.length; i++) {
                     $scope.annotations[i].isExpanded = false;
                 }
@@ -22,6 +23,10 @@
             });
         }
         
+        $scope.getUserId = function () {
+            return userId;
+        }
+
         loadAnnotatedDocument();
 
         $scope.canDelete = function (ann) {

@@ -19,7 +19,7 @@
                 </td>
                 <td><a href="/Document?id={{row.Id}}">{{row.Title}}</a></td>
                 <td>{{row.Author}}</td>
-                <td><a style="cursor:pointer">{{row.Owner}}</a></td>
+                <td><a style="cursor:pointer" href="/User?userId={{row.Owner}}">{{row.Owner}}</a></td>
                 <td>{{row.AnnotationCount}}</td>
             </tr>
         </tbody>

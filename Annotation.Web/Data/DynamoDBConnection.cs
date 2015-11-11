@@ -22,8 +22,8 @@ namespace Annotation.Web.Data {
             client = new AmazonDynamoDBClient(endpoint);
         }
 
-        public static IDataManager Instance = new DynamoDBConnection();
-        //public static IDataManager Instance = new FakeDataManager();
+        //public static IDataManager Instance = new DynamoDBConnection();
+        public static IDataManager Instance = new FakeDataManager();
 
         public JObject RetrieveUser(string userId) {
             throw new Exception();
@@ -176,9 +176,12 @@ namespace Annotation.Web.Data {
             var a = this.get(USER_DOCUMENTS, "UserId", userId);
             var ids = JArray.Parse(a[0]["DocumentIds"]);
             foreach (var id in ids) {
-                yield return this.GetDocumentInfo(Guid.Parse(id.Value<string>()));
+                Guid docId = Guid.Parse(id.Value<string>());
+                int count = this.GetAnnotationCount(docId);
+                var toReturn = this.GetDocumentInfo(docId);
+                toReturn.AnnotationCount = count;
+                yield return toReturn;
             }
-           
         }
 
         public DocumentModel GetDocument(Guid id) {
@@ -255,6 +258,15 @@ namespace Annotation.Web.Data {
             var ids = JArray.Parse(a[0]["AnnotationIds"]);
             var annotations = ids.Select(i => this.get(ANNOTATION_TABLE, "AnnotationId", i.ToString()));
             return annotations.Select(i => AnnotationModel.FromDictionary(i[0], doc)).ToList();
+        }
+
+        public int GetAnnotationCount(Guid documentId) {
+            var a = this.get(DOCUMENT_ANNOTATIONS_TABLE, "DocumentId", documentId.ToString());
+            if (a.Count == 0) {
+                return 0;
+            }
+            var ids = JArray.Parse(a[0]["AnnotationIds"]);
+            return ids.Count;
         }
 
         public void ArchiveDocument(Guid docId) {

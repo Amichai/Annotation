@@ -23,7 +23,7 @@
                         <span style="cursor:pointer" ng-click="edit(row)" ng-hide="editing == row" class="glyphicon glyphicon-edit"></span>
                     </th>
                     <td>
-                        <span>{{row.UserId}}</span>
+                        <span><a href="/User?userId={{row.UserId}}">{{row.UserId}}</a></span>
                     </td>
                     <td>
                         <span ng-hide="editing == row">{{row.FirstName}}</span>

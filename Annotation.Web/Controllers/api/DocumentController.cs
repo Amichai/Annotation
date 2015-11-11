@@ -17,7 +17,7 @@ namespace Annotation.Web.Controllers.api
         // GET: api/Document
         public IEnumerable<DocumentInfo> Get() {
             var currentUser = IdentityUtil.GetCurrentUser();
-            IEnumerable<DocumentInfo> documents = DynamoDBConnection.Instance.GetUserDocuments(currentUser.UserId)
+            var documents = DynamoDBConnection.Instance.GetUserDocuments(currentUser.UserId)
                 .Where(i => !i.IsArchived)
                 ;
             return documents;

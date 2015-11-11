@@ -14,13 +14,7 @@
                             <ul class="nav navbar-nav">
                                 <li><a class="navbar-brand" href="/" ng-class="{'selectedNavigationElement':currentPage == 'Home'}">Home</a></li>
                                 <li>
-                                    <button class="btn btn-default" type="submit" style="margin-left:10px;margin-top:7px" data-toggle="modal" data-target="#newAnnotationModal" title="Add new annotation"><span class="glyphicon glyphicon-plus"></span></button>
-                                </li>
-                                <li>
-                                    <div style="">
-                                        <a><img src="~/Content/Assets/column3.png" width="25" class="setColumnStyle" style="margin-left:50px;" /></a>
-                                        <a><img src="~/Content/Assets/text22.png" width="25" class="setColumnStyle" /></a>
-                                    </div>
+                                    <button class="btn btn-default" type="submit" style="margin-left:10px;margin-top:8px" data-toggle="modal" data-target="#newAnnotationModal" title="Add new annotation"><span class="glyphicon glyphicon-plus"></span></button>
                                 </li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search">
@@ -33,8 +27,8 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentUserModel.UserId}}<span class="caret"></span></a>
                                     <ul class="dropdown-menu" style="min-width:120px">
-                                        <li><a href="#">Profile</a></li>
-                                        <li><a href="#">Log out</a></li>
+                                        <li><a href="/User?userId={{getUserId()}}">Profile</a></li>
+                                        <li><a href="/Account">Log out</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -62,7 +56,7 @@
                           style="white-space:pre-wrap"
                           ng-class="{linkedText: unit.Type == 'LinkedText'}">{{unit.Val}}</span>
                     <div style="cursor:pointer;margin-left:30px">
-                        <a>{{ann.Author}}</a>
+                        <a href="/User?userId={{ann.Author}}">{{ann.Author}}</a>
                         <span class="glyphicon glyphicon-star-empty" ng-hide="ann.IsStarred" ng-click="starAnnotation(ann, true)"></span>
                         <span class="glyphicon glyphicon-star" ng-show="ann.IsStarred" ng-click="starAnnotation(ann, false)" style="color:orange"></span>
                         <a href="{{currentUrl}}"><span class="glyphicon glyphicon-link" style="color:black"></span></a>
@@ -74,9 +68,9 @@
             </div>
         </div>
         <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:55px;">
+            <div>Annotated by: <span ng-repeat="ann in annotators"><i><a href="/User?userId={{ann}}">{{ann}}</a></i></span></div>
             <div id="documentTitle">{{document.Title}}</div>
             <div id="documentAuthor">{{document.Author}}</div>
-
             <br />
             <div id="textBody">
                 <span ng-repeat="token in document.Tokens" id="token_{{$index}}"

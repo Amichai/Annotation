@@ -27,4 +27,14 @@ namespace Annotation.Web.Controllers
         public string UserId { get; set; }
         public string Role { get; set; }
     }
+
+    //TODO: User page, news feed
+    //TODO: Search page, search within a document?
+    //TODO: Remove inter-linear viewer
+    //TODO: Document permissions
+    //TODO: Annotation Count -
+    //TODO: Star documents
+    //One link per annotation
+    //rtl text
+    //tooltips?
 }
