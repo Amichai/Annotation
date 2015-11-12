@@ -120,9 +120,7 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Annotation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -255,6 +253,7 @@
     <Content Include="Scripts\Controllers\HomeController.js" />
     <Content Include="Scripts\Controllers\NavBarController.js" />
     <Content Include="Scripts\Controllers\RegisterController.js" />
+    <Content Include="Scripts\Controllers\UserController.js" />
     <Content Include="Scripts\Controllers\UsersController.js" />
     <Content Include="Scripts\errors.json" />
     <Content Include="Scripts\angular-touch.min.js.map" />

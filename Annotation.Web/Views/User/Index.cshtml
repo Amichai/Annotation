@@ -1,7 +1,16 @@
-﻿
+﻿@model string
 @{
     ViewBag.Title = "User";
 }
 
-<h2>User</h2>
+<div ng-controller="userCtrl">
+    <h2>@Model</h2>
 
+
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/Util/DateFormat.js"></script>
+    <script src="~/Scripts/Controllers/UserController.js"></script>
+}
