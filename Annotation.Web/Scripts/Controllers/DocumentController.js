@@ -1,9 +1,11 @@
 ﻿app.controller('documentCtrl',
     ['$scope', '$http', function ($scope, $http) {
+        $scope.isDocumentRtl = false;
 
         function loadAnnotatedDocument() {
             $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
                 $scope.annotations = annotatedDocument.Annotations;
+                $scope.isDocumentRtl = annotatedDocument.isRTL;
                 $scope.document = annotatedDocument.Document;
                 $scope.annotators = annotatedDocument.Annotators;
                 for (var i = 0; i < $scope.annotations.length; i++) {

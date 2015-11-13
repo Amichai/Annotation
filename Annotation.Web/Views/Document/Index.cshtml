@@ -28,6 +28,7 @@
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentUserModel.UserId}}<span class="caret"></span></a>
                                     <ul class="dropdown-menu" style="min-width:120px">
                                         <li><a href="/User?userId={{getUserId()}}">Profile</a></li>
+                                        <li><a href="/">Messages</a></li>
                                         <li><a href="/Account">Log out</a></li>
                                     </ul>
                                 </li>
@@ -69,10 +70,10 @@
         </div>
         <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:55px;">
             <div>Annotated by: <span ng-repeat="ann in annotators"><i><a href="/User?userId={{ann}}">{{ann}}</a></i></span></div>
-            <div id="documentTitle">{{document.Title}}</div>
-            <div id="documentAuthor">{{document.Author}}</div>
+            <div id="documentTitle" ng-class="{rtl: isDocumentRtl}">{{document.Title}}</div>
+            <div id="documentAuthor" ng-class="{rtl: isDocumentRtl}">{{document.Author}}</div>
             <br />
-            <div id="textBody">
+            <div id="textBody" ng-class="{rtl: isDocumentRtl}">
                 <span ng-repeat="token in document.Tokens" id="token_{{$index}}"
                       style="display:inline;"
                       ng-click="clickToken(token)"

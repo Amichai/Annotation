@@ -195,13 +195,17 @@ namespace Annotation.Web.Data {
         public bool AddDocument(DocumentModel doc) {
             this.add(DOCUMENTS_TABLE, "DocumentId", doc.Id.ToString(),
                 new TableAttribute("Body", doc.Body));
+            var attributes = new List<TableAttribute>();
+            attributes.Add(new TableAttribute("Title", doc.Title));
+            attributes.Add(new TableAttribute("Owner", doc.Owner));
+            attributes.Add(new TableAttribute("AnnotationCount", doc.AnnotationCount.ToString()));
+            attributes.Add(new TableAttribute("Id", doc.Id.ToString()));
+            if (!string.IsNullOrWhiteSpace(doc.Author)) { 
+                attributes.Add(new TableAttribute("Author", doc.Author));
+            }
+            attributes.Add(new TableAttribute("IsArchived", doc.IsArchived.ToString()));
             this.add(DOCUMENT_INFO_TABLE, "DocumentId", doc.Id.ToString(),
-                new TableAttribute("Title", doc.Title),
-                new TableAttribute("Owner", doc.Owner),
-                new TableAttribute("AnnotationCount", doc.AnnotationCount.ToString()),
-                new TableAttribute("Id", doc.Id.ToString()),
-                new TableAttribute("Author", doc.Author),
-                new TableAttribute("IsArchived", doc.IsArchived.ToString())
+                attributes.ToArray()
                 );
             var a = this.get(USER_DOCUMENTS, "UserId", doc.Owner.ToString());
             var ids = JArray.Parse(a[0]["DocumentIds"]);

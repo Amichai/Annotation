@@ -106,7 +106,7 @@ namespace Annotation.Web.Models {
         private static Random rand = new Random();
 
         internal static AnnotationModel Random(DocumentModel doc) {
-            int maxTokensToTake = 20;
+            int maxTokensToTake = Math.Min(20, doc.Tokens.Count);
             var text = File.ReadAllText(System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Placeholder2.txt"));
             var tokenCount = doc.Tokens.Count;
             var startIdx = rand.Next(tokenCount - maxTokensToTake);

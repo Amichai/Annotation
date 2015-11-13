@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Annotation.Web.Models {
@@ -9,6 +10,8 @@ namespace Annotation.Web.Models {
             this.Annotations = annotations;
             this.Document = document;
             this.Document.ClearLinkedAnnotations();
+            var r = new Regex(@"\p{IsArabic}|\p{IsHebrew}");
+            this.isRTL = r.IsMatch(this.Document.Body);
             this.Annotators = this.Annotations.Select(i => i.Author).Distinct().ToList();
             for (int i = 0; i < this.Annotations.Count; i++) {
                 var annotation = this.Annotations[i];
@@ -28,6 +31,7 @@ namespace Annotation.Web.Models {
 			}
         }
 
+        public bool isRTL { get; set; }
         public List<string> Annotators { get; set; }
         public DocumentModel Document { get; set; }
         public List<AnnotationModel> Annotations { get; set; }

@@ -20,10 +20,14 @@ namespace Annotation.Web.Models {
         }
 
         internal static DocumentInfo FromDictionary(Dictionary<string, string> dict) {
+            string author = "";
+            if (dict.ContainsKey("Author")) {
+                author = dict["Author"];
+            }
             return new DocumentInfo() {
                 Title = dict["Title"],
                 Owner = dict["Owner"],
-                Author = dict["Author"],
+                Author = author,
                 AnnotationCount = int.Parse(dict["AnnotationCount"]),
                 Id = Guid.Parse(dict["DocumentId"]),
                 IsArchived = bool.Parse(dict["IsArchived"])

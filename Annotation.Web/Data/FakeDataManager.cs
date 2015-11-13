@@ -52,8 +52,12 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
             return this.documents;
         }
 
+        private Dictionary<Guid, DocumentModel> idToDocument = new Dictionary<Guid, DocumentModel>();
+
         public bool AddDocument(DocumentModel doc) {
-            throw new NotImplementedException();
+            this.documents.Add(doc.Info);
+            this.idToDocument[doc.Id] = doc;
+            return true;
         }
 
         public void AddAnnotationAndLinkToUser(NewAnnotationModel newAnnotation, string userId) {
@@ -77,9 +81,12 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
         }
 
         public DocumentModel GetDocument(Guid id) {
+            DocumentModel toReturn;
+            if (this.idToDocument.TryGetValue(id, out toReturn)) {
+                return toReturn;
+            }
             return DocumentModel.Random();
         }
-
 
         public void ArchiveDocument(Guid docId) {
             var d = this.GetDocument(docId);

@@ -30,11 +30,10 @@ namespace Annotation.Web.Controllers
 
     //TODO: User page, news feed
     //TODO: Search page, search within a document?
-    //TODO: Remove inter-linear viewer
     //TODO: Document permissions
-    //TODO: Annotation Count -
     //TODO: Star documents
     //One link per annotation
-    //rtl text
-    //tooltips?
+    //Request permission to edit
+    //Date of post/upload
+    //tooltip annotations
 }

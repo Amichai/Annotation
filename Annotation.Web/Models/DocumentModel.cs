@@ -171,7 +171,7 @@ namespace Annotation.Web.Models {
             }
             return -1;
         }
-        private static char[] toTrim = new char[] { ',', ':', '-', '.', ' ', ')', '(' };
+        private static char[] toTrim = new char[] { ',', ':', '-', '.', ' ', ')', '(', ';' };
         internal TokenRange GetTokenRange(string annotationString) {
             if (string.IsNullOrWhiteSpace(annotationString)) {
                 return null;

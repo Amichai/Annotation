@@ -155,3 +155,10 @@ hr {
 .navbar {
     margin-bottom:0;
 }
+
+.rtl {
+    direction: rtl;
+}
+.ltr {
+    direction: ltr;
+}

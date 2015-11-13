@@ -160,6 +160,7 @@
     <Compile Include="Controllers\api\AnnotationController.cs" />
     <Compile Include="Controllers\api\AuthenticationController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
+    <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Controllers\api\UsersController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Models\DocumentModel.cs" />
     <Compile Include="Models\NewAnnotationModel.cs" />
     <Compile Include="Models\PasswordHash.cs" />
+    <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Models\TokenizedAnnotation.cs" />
     <Compile Include="Models\TokenRange.cs" />
