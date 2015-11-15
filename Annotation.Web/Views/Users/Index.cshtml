@@ -11,6 +11,7 @@
                     <th st-sort="UserId">Username</th>
                     <th st-sort="FirstName">First Name</th>
                     <th st-sort="LastName">Last Name</th>
+                    <th st-sort="Created">Created</th>
                     <th>User</th>
                     <th>Manager</th>
                     <th>Administrator</th>
@@ -34,6 +35,9 @@
                         <input ng-show="editing == row" type="text" ng-model="row.LastName" />
                     </td>
                     <td>
+                        <span>{{row.CreatedString}}</span>
+                    </td>
+                    <td>
                         <input type="radio" name="roleGroup{{row.UserId}}"
                                ng-show="'user' == row.Role || editing == row"
                                ng-model="row.Role" value="user" />
@@ -41,7 +45,6 @@
                                ng-hide="'user' == row.Role || editing == row"
                                ng-model="row.Role" value="user" />
                     </td>
-
                     <td>
                         <input type="radio" name="roleGroup{{row.UserId}}"
                                ng-show="'manager' == row.Role || editing == row"
@@ -50,7 +53,6 @@
                                ng-hide="'manager' == row.Role || editing == row"
                                ng-model="row.Role" value="manager" />
                     </td>
-
                     <td>
                         <input type="radio"
                                ng-show="'admin' == row.Role || editing == row"

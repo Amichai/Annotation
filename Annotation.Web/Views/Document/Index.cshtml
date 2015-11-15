@@ -40,7 +40,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3" style="overflow-y:scroll;left:0;width:30%;height:{{pageHeight}}px;position:absolute;top:55px;" id="annotationPane">
+        <div class="col-md-3 documentReaderColumn" style="left:0;height:{{pageHeight}}px;"
+             ng-class="{'leftColPulledLeft':pullLeft, 'leftColPulledRight': !pullLeft}"
+             id="annotationPane">
             <div ng-repeat="ann in annotations"
                  ng-mouseenter="hover(ann, $index, true)"
                  ng-mouseleave="hover(ann, $index, false)"
@@ -68,8 +70,12 @@
                 <hr />
             </div>
         </div>
-        <div class="col-md-9" style="overflow-y:scroll;left:30%;width:70%;height:{{pageHeight}}px;position:absolute;top:55px;">
-            <div>Annotated by: <span ng-repeat="ann in annotators"><i><a href="/User?userId={{ann}}">{{ann}}</a></i></span></div>
+        <div class="col-md-9 documentReaderColumn" 
+             ng-class="{'rightColPulledLeft':pullLeft, 'rightColPulledRight': !pullLeft}"
+             style="height:{{pageHeight}}px;">
+            <span class="glyphicon glyphicon-chevron-right clickable" ng-show="pullLeft" ng-click="pullLeft = false" style="margin-left:-10px"></span>
+            <span class="glyphicon glyphicon-chevron-left clickable" ng-hide="pullLeft" ng-click="pullLeft = true" style="margin-left:-10px"></span>
+            <span>Annotated by: <span ng-repeat="ann in annotators"><i><a href="/User?userId={{ann}}">{{ann}}</a></i></span></span>
             <div id="documentTitle" ng-class="{rtl: isDocumentRtl}">{{document.Title}}</div>
             <div id="documentAuthor" ng-class="{rtl: isDocumentRtl}">{{document.Author}}</div>
             <br />

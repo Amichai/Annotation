@@ -507,5 +507,9 @@
             </summary>
             <returns>A user model</returns>
         </member>
+        <member name="P:Annotation.Web.Models.NewAnnotationModel.Body">
+            TODO: rename this to unlinked annotation model
+            remove the update annotation model object
+        </member>
     </members>
 </doc>

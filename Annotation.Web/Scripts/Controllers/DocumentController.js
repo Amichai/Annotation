@@ -2,6 +2,8 @@
     ['$scope', '$http', function ($scope, $http) {
         $scope.isDocumentRtl = false;
 
+        $scope.pullLeft = true;
+
         function loadAnnotatedDocument() {
             $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
                 $scope.annotations = annotatedDocument.Annotations;

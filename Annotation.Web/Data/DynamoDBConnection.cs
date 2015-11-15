@@ -25,6 +25,14 @@ namespace Annotation.Web.Data {
         public static IDataManager Instance = new DynamoDBConnection();
         //public static IDataManager Instance = new FakeDataManager();
 
+        public void ModifyUserData() {
+            var users = this.GetAllUsers(100);
+            foreach (var user in users) {
+                user.Created = DateTime.Now.Ticks;
+                this.UpdateUser(user);
+            }
+        }
+
         public JObject RetrieveUser(string userId) {
             throw new Exception();
         }
@@ -146,12 +154,7 @@ namespace Annotation.Web.Data {
         public List<UserModel> GetAllUsers(int limit) {
             return this.scan(USER_TABLE, limit).Select(i => {
                 var info = JObject.Parse(i["UserInfo"]);
-                return new UserModel() {
-                    FirstName = info["FirstName"].Value<string>(),
-                    LastName = info["LastName"].Value<string>(),
-                    Role = info["Role"].Value<string>(),
-                    UserId = info["UserId"].Value<string>()
-                };
+                return UserModel.FromJson(info);
             }).ToList();
         }
 
@@ -172,16 +175,44 @@ namespace Annotation.Web.Data {
             return DocumentInfo.FromDictionary(doc[0]);
         }
 
-        public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
+        public IEnumerable<AnnotationDataModel> GetUserAnnotations(string userId) {
+            var a = this.get(USER_ANNOTATIONS_TABLE, "UserId", userId);
+            JArray ids;
+            if (a.Count == 0) {
+                ids = JArray.Parse("[]");
+            } else {
+                ids = JArray.Parse(a[0]["AnnotationIds"]);
+            }
+            foreach (var id in ids.Select(i => i.ToString())) {
+                var asGuid = Guid.Parse(id);
+                yield return this.GetAnnotation(asGuid);
+            }
+        }
+
+        private IEnumerable<Guid> getUserDocumentIds(string userId) {
             var a = this.get(USER_DOCUMENTS, "UserId", userId);
+            if (a.Count == 0) {
+                yield break;
+            }
             var ids = JArray.Parse(a[0]["DocumentIds"]);
             foreach (var id in ids) {
                 Guid docId = Guid.Parse(id.Value<string>());
+                yield return docId;
+            }
+        }
+
+        public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
+            return this.getUserDocumentIds(userId).Select(docId => {
                 int count = this.GetAnnotationCount(docId);
                 var toReturn = this.GetDocumentInfo(docId);
                 toReturn.AnnotationCount = count;
-                yield return toReturn;
-            }
+                return toReturn;
+            });
+        }
+
+        public AnnotationDataModel GetAnnotation(Guid id) {
+            var annotation = this.get(ANNOTATION_TABLE, "AnnotationId", id.ToString())[0];
+            return AnnotationDataModel.FromDictionary(annotation);
         }
 
         public DocumentModel GetDocument(Guid id) {
@@ -207,15 +238,17 @@ namespace Annotation.Web.Data {
             this.add(DOCUMENT_INFO_TABLE, "DocumentId", doc.Id.ToString(),
                 attributes.ToArray()
                 );
-            var a = this.get(USER_DOCUMENTS, "UserId", doc.Owner.ToString());
-            var ids = JArray.Parse(a[0]["DocumentIds"]);
+            var ids = this.getUserDocumentIds(doc.Owner).ToList();
             if (ids.Any(i => i.ToString() == doc.Id.ToString())) {
                 return true;
             }
             ids.Add(doc.Id);
-            
+            JArray a = new JArray();
+            foreach (var id in ids) {
+                a.Add(id);
+            }
             this.add(USER_DOCUMENTS, "UserId", doc.Owner,
-                new TableAttribute("DocumentIds", ids.ToString()));
+                new TableAttribute("DocumentIds", a.ToString()));
             return true;
         }
 
@@ -253,7 +286,7 @@ namespace Annotation.Web.Data {
                 new TableAttribute("AnnotationIds", ids.ToString()));
         }
 
-        public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+        public List<AnnotationModel> GetAnnotations(Guid documentId, DocumentModel doc) {
             //TODO: check the permissions on this user
             var a = this.get(DOCUMENT_ANNOTATIONS_TABLE, "DocumentId", documentId.ToString());
             if (a.Count == 0) {

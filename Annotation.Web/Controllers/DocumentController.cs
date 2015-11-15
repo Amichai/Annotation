@@ -35,5 +35,7 @@ namespace Annotation.Web.Controllers
     //One link per annotation
     //Request permission to edit
     //Date of post/upload
-    //tooltip annotations
+    //tooltip annotations (tags)
+    //Link next chapter
+    //Loading wheel while waiting for the document
 }

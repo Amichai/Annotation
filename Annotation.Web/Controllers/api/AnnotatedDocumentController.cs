@@ -13,7 +13,7 @@ namespace Annotation.Web.Controllers.api {
         public AnnotatedDocument Get(Guid id) {
             DocumentModel doc = DynamoDBConnection.Instance.GetDocument(id);
             var user = IdentityUtil.GetCurrentUser();
-            List<AnnotationModel> annotations = DynamoDBConnection.Instance.GetAnnotations(id, user.UserId, doc);
+            List<AnnotationModel> annotations = DynamoDBConnection.Instance.GetAnnotations(id, doc);
             return new AnnotatedDocument(annotations.OrderBy(i => i.Ord).ToList(),
                 doc);
         }

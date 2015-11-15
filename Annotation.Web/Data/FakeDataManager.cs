@@ -25,6 +25,10 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
             return this.userIdToUser.Values.Select(i => UserModel.FromJson(i)).ToList();
         }
 
+        public IEnumerable<AnnotationDataModel> GetUserAnnotations(string userId) {
+            throw new NotImplementedException();
+        }
+
         public Dictionary<string, string> GetUser(string userId) {
             var obj = this.userIdToUser[userId];
             var toReturn = new Dictionary<string, string>();
@@ -66,7 +70,7 @@ FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""te
 
         private static Random rand = new Random();
 
-        public List<AnnotationModel> GetAnnotations(Guid documentId, string userId, DocumentModel doc) {
+        public List<AnnotationModel> GetAnnotations(Guid documentId, DocumentModel doc) {
             if (this.annotations != null) {
                 return annotations.Values.ToList();
             }

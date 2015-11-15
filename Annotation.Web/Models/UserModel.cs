@@ -12,7 +12,7 @@ namespace Annotation.Web.Models {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; }
-
+        public long Created { get; set; }
         public bool IsAdministrator {
             get {
                 return this.Role == "admin";
@@ -31,8 +31,15 @@ namespace Annotation.Web.Models {
             return new UserModel() {
                 UserId = username,
                 Password = string.Concat(arr.Select(i => (char)i)),
-                Role = "user"
+                Role = "user",
+                Created = DateTime.Now.Ticks
             };
+        }
+
+        public string CreatedString {
+            get {
+                return new DateTime(this.Created).ToShortDateString();
+            }
         }
 
         public JObject ToJson() {
@@ -42,6 +49,7 @@ namespace Annotation.Web.Models {
             toReturn["LastName"] = this.LastName;
             toReturn["Password"] = this.Password;
             toReturn["Role"] = this.Role;
+            toReturn["Created"] = this.Created.ToString();
             return toReturn;
         }
 
@@ -58,6 +66,7 @@ namespace Annotation.Web.Models {
                 UserId = data["UserId"].Value<string>(),
                 FirstName = firstName,
                 LastName = lastName,
+                Created = data["Created"].Value<long>(),
                 Role = data["Role"].Value<string>()
             };
         }
