@@ -4,6 +4,8 @@
 
         $scope.pullLeft = true;
 
+        $scope.contentLoaded = false;
+
         function loadAnnotatedDocument() {
             $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
                 $scope.annotations = annotatedDocument.Annotations;
@@ -22,11 +24,30 @@
                             $('#token_' + i).addClass('hasAnnotation');
                         }
                     }
+                    $scope.contentLoaded = true;
                 }
                 delay(f);
             });
         }
         
+        function getSelectionText() {
+            var text = "";
+            if (window.getSelection) {
+                text = window.getSelection().toString();
+            } else if (document.selection && document.selection.type != "Control") {
+                text = document.selection.createRange().text;
+            }
+            return text;
+        }
+
+        $('#newAnnotationModal').on('shown.bs.modal', function (event) {
+            var text = getSelectionText();
+            //TODO: tokenize the selection so that it links properly
+            var toSet = "`" + text + "`";
+            $scope.newAnnotationText = toSet;
+            $scope.$apply();
+        })
+
         $scope.getUserId = function () {
             return userId;
         }

@@ -38,4 +38,5 @@ namespace Annotation.Web.Controllers
     //tooltip annotations (tags)
     //Link next chapter
     //Loading wheel while waiting for the document
+    //pull right/left tool should hover and look like a button
 }

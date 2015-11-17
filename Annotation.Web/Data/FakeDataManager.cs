@@ -13,7 +13,10 @@ namespace Annotation.Web.Data {
 
         private Dictionary<string, JObject> userIdToUser = new Dictionary<string, JObject>() {
             { "test", JObject.Parse(@"{UserInfo: {
-FirstName:"""", LastName: """", UserId: ""test"", Role: ""user"", Password: ""test""
+FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", Role: ""user"", Password: ""test""
+} }")},
+    { "Amichai", JObject.Parse(@"{UserInfo: {
+FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", Role: ""user"", Password: ""test""
 } }")}
         };
 

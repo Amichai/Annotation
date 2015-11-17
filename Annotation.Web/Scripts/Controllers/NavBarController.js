@@ -14,4 +14,12 @@ app.controller('navBarCtrl', ['$scope', '$http', '$timeout', function ($scope, $
     $http.get(baseUrl + 'api/Users/GetCurrentUser').success(function (user) {
         $scope.currentUserModel = user;
     });
+
+    $scope.submitSearch = function () {
+        $http.get(baseUrl + 'api/Search?query=' + $scope.searchQuery).success(function (user) {
+
+            console.log("testing")
+        });
+    }
+
 }]);

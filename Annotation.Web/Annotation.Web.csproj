@@ -160,6 +160,7 @@
     <Compile Include="Controllers\api\AnnotationController.cs" />
     <Compile Include="Controllers\api\AuthenticationController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
+    <Compile Include="Controllers\api\SearchController.cs" />
     <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Controllers\api\UsersController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Models\PasswordHash.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\SearchResultsModel.cs" />
     <Compile Include="Models\TokenizedAnnotation.cs" />
     <Compile Include="Models\TokenRange.cs" />
     <Compile Include="Models\UpdateAnnotationModel.cs" />
@@ -196,6 +198,7 @@
     </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\Assets\column3.png" />
+    <Content Include="Content\Assets\default.gif" />
     <Content Include="Content\Assets\text22.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
