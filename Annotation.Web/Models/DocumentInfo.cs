@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Annotation.Web.Data;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,7 +9,17 @@ namespace Annotation.Web.Models {
     public class DocumentInfo {
         public DocumentInfo() {
             this.IsArchived = false;
+            this.Permissioned = new List<string>();
         }
+
+        public bool IsPublic { get; set; }
+        public List<string> Permissioned { get; set; }
+        public string PermissionedString {
+            get {
+                return string.Join(", ", this.Permissioned);
+            }
+        }
+
         public string Title { get; set; }
         public string Owner { get; set; }
         public int AnnotationCount { get; set; }
@@ -24,13 +36,17 @@ namespace Annotation.Web.Models {
             if (dict.ContainsKey("Author")) {
                 author = dict["Author"];
             }
+            var permissioned = JArray.Parse(dict["Permissioned"]);
             return new DocumentInfo() {
                 Title = dict["Title"],
                 Owner = dict["Owner"],
                 Author = author,
                 AnnotationCount = int.Parse(dict["AnnotationCount"]),
                 Id = Guid.Parse(dict["DocumentId"]),
-                IsArchived = bool.Parse(dict["IsArchived"])
+                IsArchived = bool.Parse(dict["IsArchived"]),
+                IsPublic = bool.Parse(dict["IsPublic"]),
+                IsOpen = bool.Parse(dict["IsOpen"]),
+                Permissioned = permissioned.Select(i => i.ToString()).ToList()
             };
         }
 
@@ -44,5 +60,8 @@ namespace Annotation.Web.Models {
                 Author = "Author_" + rand.Next(0, 100),
             };
         }
+
+        public bool IsOwnedByMe { get; set; }
+        public bool IsOpen { get; set; }
     }
 }

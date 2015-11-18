@@ -18,8 +18,12 @@ namespace Annotation.Web.Controllers.api
         public IEnumerable<DocumentInfo> Get() {
             var currentUser = IdentityUtil.GetCurrentUser();
             var documents = DynamoDBConnection.Instance.GetUserDocuments(currentUser.UserId)
-                .Where(i => !i.IsArchived)
-                ;
+                .Where(i => !i.IsArchived).ToList();
+            documents.ForEach(i => {
+                if (i.Owner == currentUser.UserId) {
+                    i.IsOwnedByMe = true;
+                }
+            });
             return documents;
         }
 

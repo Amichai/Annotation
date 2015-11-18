@@ -15,6 +15,9 @@ namespace Annotation.Web.Controllers.api
         public ProfileModel Get(string userId) {
             var db = DynamoDBConnection.Instance;
             var userDict = db.GetUser(userId);
+            if (userDict == null) {
+                return null;
+            }
             var json = JObject.Parse(userDict["UserInfo"]);
             var user = UserModel.FromJson(json);
             var docs = db.GetUserDocuments(userId);

@@ -16,5 +16,11 @@ namespace Annotation.Web.Data {
         void ArchiveDocument(Guid docId);
         void UpdateAnnotation(UpdateAnnotationModel annotation);
         IEnumerable<AnnotationDataModel> GetUserAnnotations(string userId);
+        void AddDocumentPermission(Guid documentId, string user);
+        void RemoveDocumentPermission(Guid docId, string user);
+
+        void MakePublic(Guid docId, bool makePublic);
+
+        void MakeOpen(Guid docId, bool state);
     }
 }

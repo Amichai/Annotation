@@ -11,6 +11,10 @@ namespace Annotation.Web.Data {
             this.documents = Enumerable.Range(0, 10).Select(i => DocumentInfo.Random()).ToList();
         }
 
+        public void MakeOpen(Guid docId, bool state) {
+            throw new NotImplementedException();
+        }
+
         private Dictionary<string, JObject> userIdToUser = new Dictionary<string, JObject>() {
             { "test", JObject.Parse(@"{UserInfo: {
 FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", Role: ""user"", Password: ""test""
@@ -26,6 +30,10 @@ FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", R
 
         public List<UserModel> GetAllUsers(int limit) {
             return this.userIdToUser.Values.Select(i => UserModel.FromJson(i)).ToList();
+        }
+
+        public void MakePublic(Guid docId, bool makePublic) {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<AnnotationDataModel> GetUserAnnotations(string userId) {
@@ -65,6 +73,14 @@ FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", R
             this.documents.Add(doc.Info);
             this.idToDocument[doc.Id] = doc;
             return true;
+        }
+
+        public void AddDocumentPermission(Guid docId, string user) {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveDocumentPermission(Guid docId, string user) {
+            throw new NotImplementedException();
         }
 
         public void AddAnnotationAndLinkToUser(NewAnnotationModel newAnnotation, string userId) {

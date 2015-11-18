@@ -25,6 +25,76 @@ namespace Annotation.Web.Data {
         public static IDataManager Instance = new DynamoDBConnection();
         //public static IDataManager Instance = new FakeDataManager();
 
+        public void MakePublic(Guid docId, bool state) {
+            var info = this.GetDocumentInfo(docId);
+            if(info.IsPublic != state) {
+                info.IsPublic = state;
+            }
+            this.setDocumentInfo(info);
+        }
+
+        public void MakeOpen(Guid docId, bool state) {
+            var info = this.GetDocumentInfo(docId);
+            if (info.IsOpen != state) {
+                info.IsOpen = state;
+            }
+            this.setDocumentInfo(info);
+        }
+
+        private void setDocumentInfo(string title, string owner, int annotationCount, Guid id,
+            string author, bool isArchived, bool isPublic, bool isOpen, List<string> permissioned) {
+            var attributes = new List<TableAttribute>();
+            attributes.Add(new TableAttribute("Title", title));
+            attributes.Add(new TableAttribute("Owner", owner));
+            attributes.Add(new TableAttribute("AnnotationCount", annotationCount.ToString()));
+            attributes.Add(new TableAttribute("Id", id.ToString()));
+            if (!string.IsNullOrWhiteSpace(author)) {
+                attributes.Add(new TableAttribute("Author", author));
+            }
+            attributes.Add(new TableAttribute("IsArchived", isArchived.ToString()));
+            attributes.Add(new TableAttribute("IsPublic", isPublic.ToString()));
+            attributes.Add(new TableAttribute("IsOpen", isOpen.ToString()));
+            JArray newArr = new JArray();
+            permissioned.ForEach(i => newArr.Add(i));
+            attributes.Add(new TableAttribute("Permissioned", newArr.ToString()));
+            this.add(DOCUMENT_INFO_TABLE, "DocumentId", id.ToString(),
+                attributes.ToArray());
+        }
+
+        private void setDocumentInfo(DocumentInfo info) {
+            this.setDocumentInfo(info.Title, info.Owner, info.AnnotationCount,
+                info.Id, info.Author, info.IsArchived, info.IsPublic,
+                info.IsOpen, info.Permissioned);
+        }
+
+        public void RemoveDocumentPermission(Guid documentId, string user) {
+            var docInfo = this.GetDocumentInfo(documentId);
+            if (!docInfo.Permissioned.Contains(user)) {
+                return;
+            }
+            docInfo.Permissioned.Remove(user);
+            this.setDocumentInfo(docInfo);
+        }
+
+        public void AddDocumentPermission(Guid documentId, string user) {
+            var docInfo = this.GetDocumentInfo(documentId);
+            if (docInfo.Permissioned.Contains(user)) {
+                return;
+            }
+            docInfo.Permissioned.Add(user);
+            this.setDocumentInfo(docInfo);
+
+            var matches = this.get(USER_SHARED_WITH_ME, "UserId", user);
+            JArray shared = new JArray();
+            if(matches.Count > 0) {
+                shared = JArray.Parse(matches[0]["SharedWithMe"]);
+            }
+            shared.Add(documentId);
+            this.add(USER_SHARED_WITH_ME, "UserId", user,
+                new TableAttribute("SharedWithMe", shared.ToString()));
+        }
+
+
         public void ModifyUserData() {
             var users = this.GetAllUsers(100);
             foreach (var user in users) {
@@ -63,6 +133,8 @@ namespace Annotation.Web.Data {
         private const string ANNOTATION_TABLE = @"annotation_annotations";
         private const string USER_ANNOTATIONS_TABLE = @"annotation_userAnnotations";
         private const string DOCUMENT_ANNOTATIONS_TABLE = @"annotation_documentAnnotations";
+        private const string USER_SHARED_WITH_ME = @"annotation_userIdSharedWithMe";
+
 
         public Dictionary<string, string> GetUser(
             string userId
@@ -201,13 +273,30 @@ namespace Annotation.Web.Data {
             }
         }
 
-        public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
-            return this.getUserDocumentIds(userId).Select(docId => {
-                int count = this.GetAnnotationCount(docId);
-                var toReturn = this.GetDocumentInfo(docId);
-                toReturn.AnnotationCount = count;
+        private List<Guid> getDocumentsSharedWithMe(string userId) {
+            List<Guid> toReturn = new List<Guid>();
+            var sharedIds = this.get(USER_SHARED_WITH_ME, "UserId", userId);
+            if (sharedIds.Count == 0) {
                 return toReturn;
-            });
+            }
+            JArray arr = JArray.Parse(sharedIds.First()["SharedWithMe"]);
+            foreach (var id in arr) {
+                toReturn.Add(Guid.Parse(id.ToString()));
+            }
+            return toReturn;
+        }
+
+        public IEnumerable<DocumentInfo> GetUserDocuments(string userId) {
+            List<DocumentInfo> toReturn = new List<DocumentInfo>();
+            var sharedWithMe = this.getDocumentsSharedWithMe(userId);
+            toReturn.AddRange(sharedWithMe.Select(i => this.GetDocumentInfo(i)));
+            toReturn.AddRange(getUserDocumentIds(userId).Select(docId => {
+                int count = this.GetAnnotationCount(docId);
+                var r2 = this.GetDocumentInfo(docId);
+                r2.AnnotationCount = count;
+                return r2;
+            }));
+            return toReturn;
         }
 
         public AnnotationDataModel GetAnnotation(Guid id) {
@@ -226,18 +315,7 @@ namespace Annotation.Web.Data {
         public bool AddDocument(DocumentModel doc) {
             this.add(DOCUMENTS_TABLE, "DocumentId", doc.Id.ToString(),
                 new TableAttribute("Body", doc.Body));
-            var attributes = new List<TableAttribute>();
-            attributes.Add(new TableAttribute("Title", doc.Title));
-            attributes.Add(new TableAttribute("Owner", doc.Owner));
-            attributes.Add(new TableAttribute("AnnotationCount", doc.AnnotationCount.ToString()));
-            attributes.Add(new TableAttribute("Id", doc.Id.ToString()));
-            if (!string.IsNullOrWhiteSpace(doc.Author)) { 
-                attributes.Add(new TableAttribute("Author", doc.Author));
-            }
-            attributes.Add(new TableAttribute("IsArchived", doc.IsArchived.ToString()));
-            this.add(DOCUMENT_INFO_TABLE, "DocumentId", doc.Id.ToString(),
-                attributes.ToArray()
-                );
+            this.setDocumentInfo(doc.Info);
             var ids = this.getUserDocumentIds(doc.Owner).ToList();
             if (ids.Any(i => i.ToString() == doc.Id.ToString())) {
                 return true;

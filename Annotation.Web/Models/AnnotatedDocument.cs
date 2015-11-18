@@ -6,7 +6,9 @@ using System.Web;
 
 namespace Annotation.Web.Models {
     public class AnnotatedDocument {
-        public AnnotatedDocument(List<AnnotationModel> annotations, DocumentModel document) {
+        public AnnotatedDocument(
+            List<AnnotationModel> annotations, 
+            DocumentModel document) {
             this.Annotations = annotations;
             this.Document = document;
             this.Document.ClearLinkedAnnotations();

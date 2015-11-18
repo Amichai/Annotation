@@ -95,6 +95,24 @@ namespace Annotation.Web.Models {
             }
         }
 
+        public bool IsOpen {
+            get {
+                return this.Info.IsOpen;
+            }
+            set {
+                this.Info.IsOpen = value;
+            }
+        }
+
+        public bool IsPublic {
+            get {
+                return this.Info.IsPublic;
+            }
+            set {
+                this.Info.IsPublic = value;
+            }
+        }
+
         public string Title {
             get {
                 return this.Info.Title;
