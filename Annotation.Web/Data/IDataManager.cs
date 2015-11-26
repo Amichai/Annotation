@@ -25,5 +25,6 @@ namespace Annotation.Web.Data {
         void MakePublic(Guid docId, bool makePublic);
 
         void MakeOpen(Guid docId, bool state);
+        void UserDocumentPermissions(Guid id, string userId, out bool canView, out bool canEdit);
     }
 }

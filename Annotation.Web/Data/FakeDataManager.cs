@@ -130,5 +130,9 @@ FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", R
         public void ArchiveAnnotation(Guid id) {
             throw new NotImplementedException();
         }
+
+        public void UserDocumentPermissions(Guid id, string userId, out bool canView, out bool canEdit) {
+            throw new NotImplementedException();
+        }
     }
 }

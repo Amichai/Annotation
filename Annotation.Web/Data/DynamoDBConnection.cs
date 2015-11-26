@@ -419,5 +419,23 @@ namespace Annotation.Web.Data {
             string author = annotationDict["Author"];
             this.AddAnnotation(id, ticks, body, author);
         }
+
+
+        public void UserDocumentPermissions(Guid id, string userId, out bool canView, out bool canAnnotate) {
+            canView = false;
+            canAnnotate = false;
+            var docInfo = this.GetDocumentInfo(id);
+            if (docInfo.Permissioned.Contains(userId)) {
+                canView = true;
+                canAnnotate = true;
+                return;
+            }
+            if (docInfo.IsPublic) {
+                canView = true;
+                if (docInfo.IsOpen) {
+                    canAnnotate = true;
+                }
+            }
+        }
     }
 }

@@ -7,6 +7,10 @@
         $scope.contentLoaded = false;
 
         function loadAnnotatedDocument() {
+            if (canView != "True") {
+                $scope.contentLoaded = true;
+                return;
+            }
             $http.get(baseUrl + 'api/AnnotatedDocument/' + documentId).success(function (annotatedDocument) {
                 $scope.annotations = annotatedDocument.Annotations;
                 $scope.isDocumentRtl = annotatedDocument.isRTL;

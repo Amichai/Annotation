@@ -1,4 +1,5 @@
-﻿using Annotation.Web.Models;
+﻿using Annotation.Web.Data;
+using Annotation.Web.Models;
 using Annotation.Web.Util;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,16 @@ namespace Annotation.Web.Controllers
         public ActionResult Index(Guid id)
         {
             var user = IdentityUtil.GetCurrentUser();
-            return View(new DocIdUserId() {
+            bool canView, canAnnotate;
+            if (user.IsAdministrator) {
+                return View(new DocIdUserId(true, true) {
+                    DocumentId = id,
+                    UserId = user.UserId,
+                    Role = user.Role
+                }); 
+            }
+            DynamoDBConnection.Instance.UserDocumentPermissions(id, user.UserId, out canView, out canAnnotate);            
+            return View(new DocIdUserId(canView, canAnnotate) {
                 DocumentId = id, 
                 UserId = user.UserId,
                 Role = user.Role
@@ -23,9 +33,15 @@ namespace Annotation.Web.Controllers
     }
 
     public class DocIdUserId {
+        public DocIdUserId(bool canView, bool canAnnotate) {
+            this.CanAnnotate = canAnnotate;
+            this.CanView = canView;
+        }
         public Guid DocumentId { get; set; }
         public string UserId { get; set; }
         public string Role { get; set; }
+        public bool CanView { get; set; }
+        public bool CanAnnotate { get; set; }
     }
 
     //TODO: User page, news feed
