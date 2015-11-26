@@ -20,5 +20,17 @@ namespace Annotation.Web.Controllers.api {
         public void Put([FromBody] UpdateAnnotationModel annotation) {
             DynamoDBConnection.Instance.UpdateAnnotation(annotation);
         }
+
+        public bool Delete(Guid id) {
+            var current = IdentityUtil.GetCurrentUser();
+            if(!current.IsAdministrator) {
+                var annotation = DynamoDBConnection.Instance.GetAnnotation(id);
+                if (annotation.Author != current.UserId) {
+                    return false;
+                }
+            }
+            DynamoDBConnection.Instance.ArchiveAnnotation(id);
+            return true;
+        }
     }
 }

@@ -299,6 +299,14 @@ namespace Annotation.Web.Data {
             return toReturn;
         }
 
+        public void ArchiveAnnotation(Guid id) {
+            var annotationDict = this.get(ANNOTATION_TABLE, "AnnotationId", id.ToString())[0];
+            var ticks = long.Parse(annotationDict["Timestamp"]);
+            string body = annotationDict["Body"];
+            string author = annotationDict["Author"];
+            this.AddAnnotation(id, ticks, body, author, isArchived:true);
+        }
+
         public AnnotationDataModel GetAnnotation(Guid id) {
             var annotation = this.get(ANNOTATION_TABLE, "AnnotationId", id.ToString())[0];
             return AnnotationDataModel.FromDictionary(annotation);
@@ -330,11 +338,12 @@ namespace Annotation.Web.Data {
             return true;
         }
 
-        public void AddAnnotation(Guid id, long ticks, string body, string author) {
+        public void AddAnnotation(Guid id, long ticks, string body, string author, bool isArchived = false) {
             this.add(ANNOTATION_TABLE, "AnnotationId", id.ToString(),
                 new TableAttribute("Timestamp", ticks.ToString(), ValueType.N),
                 new TableAttribute("Body", body),
-                new TableAttribute("Author", author));
+                new TableAttribute("Author", author),
+                new TableAttribute("IsArchived", isArchived.ToString()));
         }
 
         public void AddAnnotationAndLinkToUser(NewAnnotationModel newAnnotation, string userId) {

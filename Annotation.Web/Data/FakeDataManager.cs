@@ -121,5 +121,14 @@ FirstName:"""", LastName: """", Created: 635831905773640372, UserId: ""test"", R
         public void UpdateAnnotation(UpdateAnnotationModel annotation) {
             annotations[annotation.Id].Body = annotation.Body;
         }
+
+
+        public AnnotationDataModel GetAnnotation(Guid id) {
+            throw new NotImplementedException();
+        }
+
+        public void ArchiveAnnotation(Guid id) {
+            throw new NotImplementedException();
+        }
     }
 }

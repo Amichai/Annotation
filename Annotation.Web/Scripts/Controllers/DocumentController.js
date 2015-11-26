@@ -42,10 +42,12 @@
 
         $('#newAnnotationModal').on('shown.bs.modal', function (event) {
             var text = getSelectionText();
-            //TODO: tokenize the selection so that it links properly
-            var toSet = "`" + text + "`";
-            $scope.newAnnotationText = toSet;
-            $scope.$apply();
+            if (text) {
+                //TODO: tokenize the selection so that it links properly
+                var toSet = "`" + text + "`";
+                $scope.newAnnotationText = toSet;
+                $scope.$apply();
+            }
         })
 
         $scope.getUserId = function () {
@@ -75,6 +77,21 @@
         }
 
         $scope.deleteAnnotation = function (annotation) {
+            $http.delete(baseUrl + 'api/Annotation?id=' + annotation.Id).success(function(success) {
+                if (success) {
+                    var indexToRemove = -1;
+                    for (var i = 0; i < $scope.annotations.length; i++) {
+                        var ann = $scope.annotations[i];
+                        if (ann.Id == annotation.Id) {
+                            indexToRemove = i;
+                            break;
+                        }
+                    }
+                    if (indexToRemove != -1) {
+                        $scope.annotations.splice(indexToRemove, 1);
+                    }
+                }
+            });
             event.stopPropagation();
         }
 

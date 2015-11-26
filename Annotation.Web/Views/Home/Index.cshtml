@@ -65,10 +65,10 @@
                     <input type="text" placeholder="Author" class="form-control" ng-model="newDocumentAuthor" />
                     <textarea id="newDocumentTextArea" class="form-control" ng-model="newDocumentBody"></textarea>
                     <div>
-                        <span>Anyone with a link can view? </span><input type="checkbox" ng-model="newDocumentIsPublic" value="true" />
+                        <span>Public (anyone with a link can view) </span><input type="checkbox" ng-model="newDocumentIsPublic" value="true" />
                     </div>
                     <div ng-show="newDocumentIsPublic">
-                        <span>Anyone with a link can annotate? </span><input type="checkbox" ng-model="newDocumentIsOpen" value="true" />
+                        <span>Open (anyone with a link can annotate) </span><input type="checkbox" ng-model="newDocumentIsOpen" value="true" />
                     </div>
 
                 </div>

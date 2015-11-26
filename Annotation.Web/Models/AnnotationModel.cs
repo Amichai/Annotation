@@ -8,7 +8,7 @@ namespace Annotation.Web.Models {
     public class AnnotationModel {
         private const int PREVIEW_LENGTH = 200;
 
-        public AnnotationModel(string author, string body, DocumentModel fullText) {
+        public AnnotationModel(string author, string body, DocumentModel fullText, bool isArchived) {
             this.Author = author;
             this.Body = body;
             if (this.Body.Length <= PREVIEW_LENGTH) {
@@ -18,8 +18,10 @@ namespace Annotation.Web.Models {
             }
             this.setAnnotationBodyUnits(fullText);
             this.IsStarred = false;
+            this.IsArchived = isArchived;
         }
 
+        public bool IsArchived { get; set; }
         public bool IsStarred { get; set; }
 
         public bool IsPreviewCutoff {
@@ -98,7 +100,11 @@ namespace Annotation.Web.Models {
 
 
         internal static AnnotationModel FromDictionary(Dictionary<string, string> dict, DocumentModel doc) {
-            var toReturn = new AnnotationModel(dict["Author"], dict["Body"], doc);
+            bool isArchived = false;
+            if (dict.ContainsKey("IsArchived")) {
+                isArchived = bool.Parse(dict["IsArchived"]);
+            }
+            var toReturn = new AnnotationModel(dict["Author"], dict["Body"], doc, isArchived);
             toReturn.Id = Guid.Parse(dict["AnnotationId"]);
             return toReturn;
         }
@@ -117,7 +123,7 @@ namespace Annotation.Web.Models {
             int textToTake = rand.Next(1000);
             var body = string.Format("`{0}`", quoted) + 
                 string.Concat(text.Skip(textStart).Take(Math.Min(textToTake, textLength - textStart)));
-            var toReturn = new AnnotationModel("test", body, doc);
+            var toReturn = new AnnotationModel("test", body, doc, isArchived:false);
             toReturn.Id = Guid.NewGuid();
             return toReturn;
         }
