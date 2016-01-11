@@ -52,6 +52,10 @@ namespace Annotation.Web.Models {
                     var t = new Token(body.Substring(currentIndex, diff), breakingChar.Value);
                     toReturn.Add(t);
                 }
+                else
+                {
+                    toReturn.Add(new Token("", breakingChar.Value));
+                }
                 currentIndex = newIndex + 1;
             }
             int lastSpan = body.Length - currentIndex;
@@ -82,7 +86,7 @@ namespace Annotation.Web.Models {
 
         private List<char> breakingChars = new List<char>() { ' ', '\n' };
         public List<Token> Tokens { get; set; }
-        
+
         public string Body { get; private set; }
         public DocumentInfo Info { get; set; }
 
