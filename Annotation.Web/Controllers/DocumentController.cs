@@ -16,18 +16,29 @@ namespace Annotation.Web.Controllers
         {
             var user = IdentityUtil.GetCurrentUser();
             bool canView, canAnnotate;
-            if (user.IsAdministrator) {
+            if (user != null && user.IsAdministrator) {
                 return View(new DocIdUserId(true, true) {
                     DocumentId = id,
                     UserId = user.UserId,
                     Role = user.Role
-                }); 
+                });
             }
-            DynamoDBConnection.Instance.UserDocumentPermissions(id, user.UserId, out canView, out canAnnotate);            
+            if (user == null)
+            {
+                canView = true;
+                canAnnotate = false;
+            }
+            else
+            {
+                DynamoDBConnection.Instance.UserDocumentPermissions(id, user.UserId, out canView, out canAnnotate);
+            }
+            var userId = user == null ? "" : user.UserId;
+            var role = user == null ? "" : user.Role;
+
             return View(new DocIdUserId(canView, canAnnotate) {
-                DocumentId = id, 
-                UserId = user.UserId,
-                Role = user.Role
+                DocumentId = id,
+                UserId = userId,
+                Role = role
             });
         }
     }
