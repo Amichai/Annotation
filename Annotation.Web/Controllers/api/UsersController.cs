@@ -39,7 +39,6 @@ namespace Annotation.Web.Controllers.api {
             var username = model.Username.Trim();
             var password = model.Password.Trim();
             var record = UserModel.Create(username, password);
-            record.Role = "admin";
             var recordJson = record.ToJson();
             if (this.dataManager.GetUser(record.UserId) != null) {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Username already exists");
